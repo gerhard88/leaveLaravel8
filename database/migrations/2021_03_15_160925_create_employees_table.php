@@ -27,6 +27,7 @@ class CreateEmployeesTable extends Migration
                 $table->date('start_date');
                 $table->string('occupation');
                 $table->string('email')->unique();
+                $table->enum('employee_status', ['A', 'I'])->default('A');
                 $table->unsignedBigInteger('employeeType_id');
                 $table->unsignedBigInteger('dept_id');
                 $table->unsignedBigInteger('team_id');

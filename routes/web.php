@@ -78,118 +78,142 @@ Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard'
 Route::get('countries', [CountryController::class, 'index'])->name('countries');
 
 // add country
-Route::get('country/add', ['as' => 'country.add','uses' => 'CountryController@add', 'middleware' => 'myMiddleware'])->middleware('auth');
+Route::get('country/add', [CountryController::class, 'add'])->name('addCountry');
 
 // store country
-Route::post('country/store', ['as' => 'country.store','uses' => 'CountryController@store']);
+Route::post('country/store', [CountryController::class, 'store'])->name('storeCountry');
 
 // edit country
-Route::get('country/edit/{id}', ['as' => 'country.edit','uses' => 'CountryController@edit', 'middleware' => 'myMiddleware'])->middleware('auth');
+Route::get('country/edit/{id}', [CountryController::class, 'edit'])->name('editCountry');
 
 // update country
-Route::PATCH('country/update/{id}', ['as' => 'country.update','uses' => 'CountryController@update']);
+Route::PATCH('country/update/{id}', [CountryController::class, 'update'])->name('updateCountry');
 
 // delete country
-Route::get('country/destroy/{id}', ['as' => 'country.destroy','uses' => 'CountryController@destroy', 'middleware' => 'myMiddleware'])->middleware('auth');
+Route::get('country/destroy/{id}', [CountryController::class, 'destroy'])->name('destroyCountry');
+
+// get the companies for the selected country
+Route::get('ajax-country-company/{id}', [CountryController::class, 'ajaxCompanies']);
 
 // route to list companies
 Route::get('companies', [CompanyController::class, 'index'])->name('companies');
 
 // add company
-Route::get('company/add', ['as' => 'company.add','uses' => 'CompanyController@add', 'middleware' => 'myMiddleware'])->middleware('auth');
+Route::get('company/add', [CompanyController::class, 'add'])->name('addCompany');
 
 // store company
-Route::post('company/store', ['as' => 'company.store','uses' => 'CompanyController@store']);
+Route::post('company/store', [CompanyController::class, 'store'])->name('storeCompany');
 
 // edit company
-Route::get('company/edit/{id}', ['as' => 'company.edit','uses' => 'CompanyController@edit', 'middleware' => 'myMiddleware'])->middleware('auth');
+Route::get('company/edit/{id}', [CompanyController::class, 'edit'])->name('editCompany');
 
 // update company
-Route::PATCH('company/update/{id}', ['as' => 'company.update','uses' => 'CompanyController@update']);
+Route::PATCH('company/update/{id}', [CompanyController::class, 'update'])->name('updateCompany');
 
 // delete company
-Route::get('company/destroy/{id}', ['as' => 'company.destroy','uses' => 'CompanyController@destroy', 'middleware' => 'myMiddleware'])->middleware('auth');
+Route::get('company/destroy/{id}', [CompanyController::class, 'destroy'])->name('destroyCompany');
 
 // edit departments linked to a company
-Route::get('company/departments/{id}', ['as' => 'company.departments','uses' => 'CompanyController@departments', 'middleware' => 'myMiddleware'])->middleware('auth');
+Route::get('company/departments/{id}', [CompanyController::class, 'departments'])->name('deptsCompany');
 
 // get the departments for the selected company
-Route::get('ajax-company-department/{id}', ['as' => 'companies.ajaxDepartment','uses' => 'CompanyController@ajaxDepartments', 'middleware' => 'myMiddleware'])->middleware('auth');
+Route::get('ajax-company-department/{id}', [CompanyController::class, 'ajaxDepartments']);
 
 // edit teams linked to a company
-Route::get('company/teams/{id}', ['as' => 'company.teams','uses' => 'CompanyController@teams', 'middleware' => 'myMiddleware'])->middleware('auth');
+Route::get('company/teams/{id}', [CompanyController::class, 'teams'])->name('teamsCompany');
+
+// get the teams for the selected company
+Route::get('ajax-company-team/{id}', [CompanyController::class, 'ajaxTeams']);
 
 // route to list departments
 Route::get('departments', [DepartmentController::class, 'index'])->name('departments');
 
 // add department
-Route::get('department/add', ['as' => 'department.add','uses' => 'DepartmentController@add', 'middleware' => 'myMiddleware'])->middleware('auth');
+Route::get('department/add', [DepartmentController::class, 'add'])->name('addDepartment');
 
 // store department
-Route::post('department/store', ['as' => 'department.store','uses' => 'DepartmentController@store']);
+Route::post('department/store', [DepartmentController::class, 'store'])->name('storeDepartment');
 
 // edit department
-Route::get('department/edit/{id}', ['as' => 'department.edit','uses' => 'DepartmentController@edit', 'middleware' => 'myMiddleware'])->middleware('auth');
+Route::get('department/edit/{id}', [DepartmentController::class, 'edit'])->name('editDepartment');
 
 // update department
-Route::PATCH('department/update/{id}', ['as' => 'department.update','uses' => 'DepartmentController@update']);
+Route::PATCH('department/update/{id}', [DepartmentController::class, 'update'])->name('updateDepartment');
 
 // delete department
-Route::get('department/destroy/{id}', ['as' => 'department.destroy','uses' => 'DepartmentController@destroy', 'middleware' => 'myMiddleware'])->middleware('auth');
+Route::get('department/destroy/{id}', [DepartmentController::class, 'destroy'])->name('destroyDepartment');
 
 // route to list teams
 Route::get('teams', [TeamController::class, 'index'])->name('teams');
 
 // add team
-Route::get('team/add', ['as' => 'team.add','uses' => 'TeamController@add', 'middleware' => 'myMiddleware'])->middleware('auth');
+Route::get('team/add', [TeamController::class, 'add'])->name('addTeam');
 
 // store team
-Route::post('team/store', ['as' => 'team.store','uses' => 'TeamController@store']);
+Route::post('team/store', [TeamController::class, 'store'])->name('storeTeam');
 
 // edit team
-Route::get('team/edit/{id}', ['as' => 'team.edit','uses' => 'TeamController@edit', 'middleware' => 'myMiddleware'])->middleware('auth');
+Route::get('team/edit/{id}', [TeamController::class, 'edit'])->name('editTeam');
 
 // update team
-Route::PATCH('team/update/{id}', ['as' => 'team.update','uses' => 'TeamController@update']);
+Route::PATCH('team/update/{id}', [TeamController::class, 'update'])->name('updateTeam');
 
 // delete team
-Route::get('team/destroy/{id}', ['as' => 'team.destroy','uses' => 'TeamController@destroy', 'middleware' => 'myMiddleware'])->middleware('auth');
+Route::get('team/destroy/{id}', [TeamController::class, 'destroy'])->name('destroyTeam');
 
-// route to list employees
-Route::get('employees', [EmployeeController::class, 'index'])->name('employees');
+// route to list employee types
+Route::get('employeeTypes', [EmployeeTypeController::class, 'index'])->name('employeeTypes');
 
-// add employee
-Route::get('employee/add', ['as' => 'employee.add','uses' => 'EmployeeController@add', 'middleware' => 'myMiddleware'])->middleware('auth');
+// add employee type
+Route::get('employeeType/add', [EmployeeTypeController::class, 'add'])->name('addEmployeeType');
 
-// store employee
-Route::post('employee/store', ['as' => 'employee.store','uses' => 'EmployeeController@store']);
+// store employee type
+Route::post('employeeType/store', [EmployeeTypeController::class, 'store'])->name('storeEmployeeType');
 
-// edit employee
-Route::get('employee/edit/{id}', ['as' => 'employee.edit','uses' => 'EmployeeController@edit', 'middleware' => 'myMiddleware'])->middleware('auth');
+// edit employee type
+Route::get('employeeType/edit/{id}', [EmployeeTypeController::class, 'edit'])->name('editEmployeeType');
 
-// update employee
-Route::PATCH('employee/update/{id}', ['as' => 'employee.update','uses' => 'EmployeeController@update']);
+// update employee type
+Route::PATCH('employeeType/update/{id}', [EmployeeTypeController::class, 'update'])->name('updateEmployeeType');
 
-// terminate employee's employment
-Route::get('employee/destroy/{id}', ['as' => 'employee.destroy','uses' => 'EmployeeController@destroy', 'middleware' => 'myMiddleware'])->middleware('auth');
+// delete employee type
+Route::get('employeeType/destroy/{id}', [EmployeeTypeController::class, 'destroy'])->name('destroyEmployeeType');
 
 // route to list leave types
 Route::get('leaveTypes', [LeaveTypeController::class, 'index'])->name('leaveTypes');
 
 // add leave type
-Route::get('leaveType/add', ['as' => 'leaveType.add','uses' => 'LeaveTypeController@add', 'middleware' => 'myMiddleware'])->middleware('auth');
+Route::get('leaveType/add', [LeaveTypeController::class, 'add'])->name('addLeaveType');
 
 // store leave type
-Route::post('leaveType/store', ['as' => 'leaveType.store','uses' => 'LeaveTypeController@store']);
+Route::post('leaveType/store', [LeaveTypeController::class, 'store'])->name('storeLeaveType');
 
 // edit leave type
-Route::get('leaveType/edit/{id}', ['as' => 'leaveType.edit','uses' => 'LeaveTypeController@edit', 'middleware' => 'myMiddleware'])->middleware('auth');
+Route::get('leaveType/edit/{id}', [LeaveTypeController::class, 'edit'])->name('editLeaveType');
 
 // update leave type
-Route::PATCH('leaveType/update/{id}', ['as' => 'leaveType.update','uses' => 'LeaveTypeController@update']);
+Route::PATCH('leaveType/update/{id}', [LeaveTypeController::class, 'update'])->name('updateLeaveType');
 
 // delete leave type
-Route::get('leaveType/destroy/{id}', ['as' => 'leaveType.destroy','uses' => 'LeaveTypeController@destroy', 'middleware' => 'myMiddleware'])->middleware('auth');
+Route::get('leaveType/destroy/{id}', [LeaveTypeController::class, 'destroy'])->name('destroyLeaveType');
+
+// route to list employees
+Route::get('employees', [EmployeeController::class, 'index'])->name('employees');
+
+// add employee
+Route::get('employee/add', [EmployeeController::class, 'add'])->name('addEmployee');
+
+// store employee
+Route::post('employee/store', [EmployeeController::class, 'store'])->name('storeEmployee');
+
+// edit employee
+Route::get('employee/edit/{id}', [EmployeeController::class, 'edit'])->name('editEmployee');
+
+// update employee
+Route::PATCH('employee/update/{id}', [EmployeeController::class, 'update'])->name('updateEmployee');
+
+// terminate employee's employment
+Route::get('employee/destroy/{id}', [EmployeeController::class, 'destroy'])->name('destroyEmployee');
 
 // leave route
 Route::get('leaves', [LeaveController::class, 'index'])->name('leaves');
@@ -198,13 +222,13 @@ Route::get('leaves', [LeaveController::class, 'index'])->name('leaves');
 Route::get('leave/add', [LeaveController::class, 'add'])->name('addLeave');
 
 // store leave
-Route::post('leave/store', ['as' => 'leave.store','uses' => 'LeaveController@store']);
+Route::post('leave/store', [LeaveController::class, 'store'])->name('storeLeave');
 
 // edit leave
-Route::get('leave/edit/{id}', ['as' => 'leave.edit','uses' => 'LeaveController@edit', 'middleware' => 'myMiddleware'])->middleware('auth');
+Route::get('leave/edit/{id}', [LeaveController::class, 'edit'])->name('editLeave');
 
 // update leave
-Route::PATCH('leave/update/{id}', ['as' => 'leave.update','uses' => 'LeaveController@update']);
+Route::PATCH('leave/update/{id}', [LeaveController::class, 'update'])->name('updateLeave');
 
 // approve leave
 Route::get('leave/approve/{id}', [LeaveController::class, 'approve'])->name('approve');
@@ -218,48 +242,36 @@ Route::get('reports/sickLeave', [ReportController::class, 'sickLeave'])->name('s
 // route to report on settings
 Route::get('settings', [ReportController::class, 'settings'])->name('settings');
 
-// get the companies for the selected country
-Route::get('ajax-country-company/{id}', ['as' => 'countries.ajaxCompanies','uses' => 'CountryController@ajaxCompanies', 'middleware' => 'myMiddleware'])->middleware('auth');
-
-// get the teams for the selected company
-Route::get('ajax-company-team/{id}', ['as' => 'companies.ajaxTeam','uses' => 'CompanyController@ajaxTeams', 'middleware' => 'myMiddleware'])->middleware('auth');
-
 // add hours worked by employees
-Route::get('attendanceRegister/search', [AttendanceRegisterController::class, 'search'])->name('searchRegister');
+Route::get('attendanceRegister/search', [AttendanceRegisterController::class, 'search'])->name('searchAttRegister');
 
 // add hours worked by employees
 Route::get('attendanceRegister/add', [AttendanceRegisterController::class, 'add'])->name('addAttRegister');
 
 // store storing hours worked by employees
-Route::post('attendanceRegister/store', ['as' => 'attendanceRegister.store','uses' => 'AttendanceRegisterController@store']);
+Route::post('attendanceRegister/store', [AttendanceRegisterController::class, 'store'])->name('storeAttRegister');
 
 // route to paginate to the left
-Route::get('paginateLeft', ['as' => 'paginateLeft','uses' => 'AttendanceRegisterController@paginateLeft', 'middleware' => 'myMiddleware'])->middleware('auth');
+Route::get('paginateLeft', [AttendanceRegisterController::class, 'paginateLeft'])->name('paginateLeft');
 
 // route to paginate to the right
-Route::get('paginateRight', ['as' => 'paginateRight','uses' => 'AttendanceRegisterController@paginateRight', 'middleware' => 'myMiddleware'])->middleware('auth');
-
-// route to list employee types
-Route::get('employeeTypes', [EmployeeTypeController::class, 'index'])->name('employeeTypes');
-
-// add employee type
-Route::get('employeeType/add', ['as' => 'employeeType.add','uses' => 'EmployeeTypeController@add', 'middleware' => 'myMiddleware'])->middleware('auth');
-
-// store employee type
-Route::post('employeeType/store', ['as' => 'employeeType.store','uses' => 'EmployeeTypeController@store']);
-
-// edit employee type
-Route::get('employeeType/edit/{id}', ['as' => 'employeeType.edit','uses' => 'EmployeeTypeController@edit', 'middleware' => 'myMiddleware'])->middleware('auth');
-
-// update employee type
-Route::PATCH('employeeType/update/{id}', ['as' => 'employeeType.update','uses' => 'EmployeeTypeController@update']);
-
-// delete employee type
-Route::get('employeeType/destroy/{id}', ['as' => 'employeeType.destroy','uses' => 'EmployeeTypeController@destroy', 'middleware' => 'myMiddleware'])->middleware('auth');
+Route::get('paginateRight', [AttendanceRegisterController::class, 'paginateRight'])->name('paginateRight');
 
 //route to display calendar view
 Route::get('calendar/view', [DashboardController::class, 'view'])->name('calendar');
 
 // get the ajaxfunction for employee names
-Route::get('getNameData', ['as' => 'getNameData','uses' => 'EmployeeController@getNameData', 'middleware' => 'myMiddleware'])->middleware('auth');
+Route::get('getNameData', [EmployeeController::class, 'getNameData']);
+
+// route to secure routes
+Route::group(['middleware' => ['myMiddleware']], function () {
+    Route::get('employees', [EmployeeController::class, 'index'])->name('employees');
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('departments', [DepartmentController::class, 'index'])->name('departments');
+    Route::get('teams', [TeamController::class, 'index'])->name('teams');
+    Route::get('leaves', [LeaveController::class, 'index'])->name('leaves');
+    Route::get('reports/annualLeave', [ReportController::class, 'annualLeave'])->name('annualLeave');
+    Route::get('reports/sickLeave', [ReportController::class, 'sickLeave'])->name('sickLeave');
+    Route::get('attendanceRegister/add', [AttendanceRegisterController::class, 'add'])->name('addAttRegister');
+});
 

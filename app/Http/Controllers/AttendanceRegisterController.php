@@ -6,6 +6,8 @@ use App\Models\AttendanceRegister;
 use App\Models\Department;
 use App\Models\Employee;
 use App\Models\EmployeeType;
+use App\Models\LeaveCalculation;
+use App\Models\LeaveType;
 use App\Models\Team;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -87,6 +89,7 @@ class AttendanceRegisterController extends Controller
 
         $date2 = date('Y-m-d', strtotime($dates));
         $date2 = Carbon::parse($date2)->format('Y-m-d');
+        $type = null;
 
         $employeesRegisterArray = array();
         foreach ($employees as $employee)
@@ -98,6 +101,7 @@ class AttendanceRegisterController extends Controller
             $employeesRegister->surname = $employee->surname;
             $employeesRegister->name = $employee->name;
             $employeeType = EmployeeType::find($employee->employeeType_id);
+            $type = $employeeType->employee_type;
             $employeesRegister->employeeType = $employeeType->employee_type;
             $attendanceRegister = AttendanceRegister::where('employee_id', '=', $employee->id)
                 ->where('dayOfWeek', '>=', $date2)->get();
@@ -136,7 +140,7 @@ class AttendanceRegisterController extends Controller
         }
         $day1 = null; $day2 = null; $day3 = null; $day4 = null; $day5 = null; $day6 = null; $day7 = null; $str_day1 = null;
         $last_date = null;
-        $type = $employeeType->employee_type;
+
         $datePagination = Carbon::now();
         $checkPagination = $datePagination->format('Y-m-d');
 
@@ -199,118 +203,120 @@ class AttendanceRegisterController extends Controller
         $day6Register = $request->input('day6Register');
         $day7Register = $request->input('day7Register');
 
-        $arrayLength = count($employees);
+        if ($employees) {
+            $arrayLength = count($employees);
 
-        for ($i = 0; $i < $arrayLength; $i++) {
+            for ($i = 0; $i < $arrayLength; $i++) {
 
-            $employee = Employee::find($employees[$i]);
+                $employee = Employee::find($employees[$i]);
 
-            $attRegister = AttendanceRegister::where('dayOfWeek', '=', $request->input('day1'))
-                ->where('employee_id', '=', $employee->id)->first();
-            if ($attRegister) {
-                $attRegister->register = $day1Register[$i];
-                $attRegister->update();
-            } else {
-                if ($employee->start_date <= $request->input('day1')) {
-                    $attendanceRegister = new AttendanceRegister($input);
-                    $attendanceRegister->dayOfWeek = $request->input('day1');
-                    $attendanceRegister->register = $day1Register[$i];
-                    $attendanceRegister->employeeType_id = $employee->employeeType_id;
-                    $attendanceRegister->employee_id = $employees[$i];
-                    $attendanceRegister->save();
+                $attRegister = AttendanceRegister::where('dayOfWeek', '=', $request->input('day1'))
+                    ->where('employee_id', '=', $employee->id)->first();
+                if ($attRegister) {
+                    $attRegister->register = $day1Register[$i];
+                    $attRegister->update();
+                } else {
+                    if ($employee->start_date <= $request->input('day1')) {
+                        $attendanceRegister = new AttendanceRegister($input);
+                        $attendanceRegister->dayOfWeek = $request->input('day1');
+                        $attendanceRegister->register = $day1Register[$i];
+                        $attendanceRegister->employeeType_id = $employee->employeeType_id;
+                        $attendanceRegister->employee_id = $employees[$i];
+                        $attendanceRegister->save();
+                    }
                 }
-            }
-            $attRegister = AttendanceRegister::where('dayOfWeek', '=', $request->input('day2'))
-                ->where('employee_id', '=', $employee->id)->first();
-            if ($attRegister) {
-                $attRegister->register = $day2Register[$i];
-                $attRegister->update();
-            } else {
-                if ($employee->start_date <= $request->input('day2')) {
-                    $attendanceRegister = new AttendanceRegister($input);
-                    $attendanceRegister->dayOfWeek = $request->input('day2');
-                    $attendanceRegister->register = $day2Register[$i];
-                    $attendanceRegister->employeeType_id = $employee->employeeType_id;
-                    $attendanceRegister->employee_id = $employees[$i];
-                    $attendanceRegister->save();
+                $attRegister = AttendanceRegister::where('dayOfWeek', '=', $request->input('day2'))
+                    ->where('employee_id', '=', $employee->id)->first();
+                if ($attRegister) {
+                    $attRegister->register = $day2Register[$i];
+                    $attRegister->update();
+                } else {
+                    if ($employee->start_date <= $request->input('day2')) {
+                        $attendanceRegister = new AttendanceRegister($input);
+                        $attendanceRegister->dayOfWeek = $request->input('day2');
+                        $attendanceRegister->register = $day2Register[$i];
+                        $attendanceRegister->employeeType_id = $employee->employeeType_id;
+                        $attendanceRegister->employee_id = $employees[$i];
+                        $attendanceRegister->save();
+                    }
                 }
-            }
-            $attRegister = AttendanceRegister::where('dayOfWeek', '=', $request->input('day3'))
-                ->where('employee_id', '=', $employee->id)->first();
-            if ($attRegister) {
-                $attRegister->register = $day3Register[$i];
-                $attRegister->update();
-            } else {
-                if ($employee->start_date <= $request->input('day3')) {
-                    $attendanceRegister = new AttendanceRegister($input);
-                    $attendanceRegister->dayOfWeek = $request->input('day3');
-                    $attendanceRegister->register = $day3Register[$i];
-                    $attendanceRegister->employeeType_id = $employee->employeeType_id;
-                    $attendanceRegister->employee_id = $employees[$i];
-                    $attendanceRegister->save();
+                $attRegister = AttendanceRegister::where('dayOfWeek', '=', $request->input('day3'))
+                    ->where('employee_id', '=', $employee->id)->first();
+                if ($attRegister) {
+                    $attRegister->register = $day3Register[$i];
+                    $attRegister->update();
+                } else {
+                    if ($employee->start_date <= $request->input('day3')) {
+                        $attendanceRegister = new AttendanceRegister($input);
+                        $attendanceRegister->dayOfWeek = $request->input('day3');
+                        $attendanceRegister->register = $day3Register[$i];
+                        $attendanceRegister->employeeType_id = $employee->employeeType_id;
+                        $attendanceRegister->employee_id = $employees[$i];
+                        $attendanceRegister->save();
+                    }
                 }
-            }
-            $attRegister = AttendanceRegister::where('dayOfWeek', '=', $request->input('day4'))
-                ->where('employee_id', '=', $employee->id)->first();
-            if ($attRegister) {
-                $attRegister->register = $day4Register[$i];
-                $attRegister->update();
-            } else {
-                if ($employee->start_date <= $request->input('day4')) {
-                    $attendanceRegister = new AttendanceRegister($input);
-                    $attendanceRegister->dayOfWeek = $request->input('day4');
-                    $attendanceRegister->register = $day4Register[$i];
-                    $attendanceRegister->employeeType_id = $employee->employeeType_id;
-                    $attendanceRegister->employee_id = $employees[$i];
-                    $attendanceRegister->save();
+                $attRegister = AttendanceRegister::where('dayOfWeek', '=', $request->input('day4'))
+                    ->where('employee_id', '=', $employee->id)->first();
+                if ($attRegister) {
+                    $attRegister->register = $day4Register[$i];
+                    $attRegister->update();
+                } else {
+                    if ($employee->start_date <= $request->input('day4')) {
+                        $attendanceRegister = new AttendanceRegister($input);
+                        $attendanceRegister->dayOfWeek = $request->input('day4');
+                        $attendanceRegister->register = $day4Register[$i];
+                        $attendanceRegister->employeeType_id = $employee->employeeType_id;
+                        $attendanceRegister->employee_id = $employees[$i];
+                        $attendanceRegister->save();
+                    }
                 }
-            }
-            $attRegister = AttendanceRegister::where('dayOfWeek', '=', $request->input('day5'))
-                ->where('employee_id', '=', $employee->id)->first();
-            if ($attRegister) {
-                $attRegister->register = $day5Register[$i];
-                $attRegister->update();
-            } else {
-                if ($employee->start_date <= $request->input('day5')) {
-                    $attendanceRegister = new AttendanceRegister($input);
-                    $attendanceRegister->dayOfWeek = $request->input('day5');
-                    $attendanceRegister->register = $day5Register[$i];
-                    $attendanceRegister->employeeType_id = $employee->employeeType_id;
-                    $attendanceRegister->employee_id = $employees[$i];
-                    $attendanceRegister->save();
+                $attRegister = AttendanceRegister::where('dayOfWeek', '=', $request->input('day5'))
+                    ->where('employee_id', '=', $employee->id)->first();
+                if ($attRegister) {
+                    $attRegister->register = $day5Register[$i];
+                    $attRegister->update();
+                } else {
+                    if ($employee->start_date <= $request->input('day5')) {
+                        $attendanceRegister = new AttendanceRegister($input);
+                        $attendanceRegister->dayOfWeek = $request->input('day5');
+                        $attendanceRegister->register = $day5Register[$i];
+                        $attendanceRegister->employeeType_id = $employee->employeeType_id;
+                        $attendanceRegister->employee_id = $employees[$i];
+                        $attendanceRegister->save();
+                    }
                 }
-            }
-            $attRegister = AttendanceRegister::where('dayOfWeek', '=', $request->input('day6'))
-                ->where('employee_id', '=', $employee->id)->first();
-            if ($attRegister) {
-                $attRegister->register = $day6Register[$i];
-                $attRegister->update();
-            } else {
-                if ($employee->start_date <= $request->input('day6')) {
-                    $attendanceRegister = new AttendanceRegister($input);
-                    $attendanceRegister->dayOfWeek = $request->input('day6');
-                    $attendanceRegister->register = $day6Register[$i];
-                    $attendanceRegister->employeeType_id = $employee->employeeType_id;
-                    $attendanceRegister->employee_id = $employees[$i];
-                    $attendanceRegister->save();
+                $attRegister = AttendanceRegister::where('dayOfWeek', '=', $request->input('day6'))
+                    ->where('employee_id', '=', $employee->id)->first();
+                if ($attRegister) {
+                    $attRegister->register = $day6Register[$i];
+                    $attRegister->update();
+                } else {
+                    if ($employee->start_date <= $request->input('day6')) {
+                        $attendanceRegister = new AttendanceRegister($input);
+                        $attendanceRegister->dayOfWeek = $request->input('day6');
+                        $attendanceRegister->register = $day6Register[$i];
+                        $attendanceRegister->employeeType_id = $employee->employeeType_id;
+                        $attendanceRegister->employee_id = $employees[$i];
+                        $attendanceRegister->save();
+                    }
                 }
-            }
-            $attRegister = AttendanceRegister::where('dayOfWeek', '=', $request->input('day7'))
-                ->where('employee_id', '=', $employee->id)->first();
-            if ($attRegister) {
-                $attRegister->register = $day7Register[$i];
-                $attRegister->update();
-            } else {
-                if ($employee->start_date <= $request->input('day7')) {
-                    $attendanceRegister = new AttendanceRegister($input);
-                    $attendanceRegister->dayOfWeek = $request->input('day7');
-                    $attendanceRegister->register = $day7Register[$i];
-                    $attendanceRegister->employeeType_id = $employee->employeeType_id;
-                    $attendanceRegister->employee_id = $employees[$i];
-                    $attendanceRegister->save();
+                $attRegister = AttendanceRegister::where('dayOfWeek', '=', $request->input('day7'))
+                    ->where('employee_id', '=', $employee->id)->first();
+                if ($attRegister) {
+                    $attRegister->register = $day7Register[$i];
+                    $attRegister->update();
+                } else {
+                    if ($employee->start_date <= $request->input('day7')) {
+                        $attendanceRegister = new AttendanceRegister($input);
+                        $attendanceRegister->dayOfWeek = $request->input('day7');
+                        $attendanceRegister->register = $day7Register[$i];
+                        $attendanceRegister->employeeType_id = $employee->employeeType_id;
+                        $attendanceRegister->employee_id = $employees[$i];
+                        $attendanceRegister->save();
+                    }
                 }
+                $this->calculateLeave($employees[$i]);
             }
-            $this->calculateLeave($employees[$i]);
         }
         if ($endDate > $request->input('day7') && $request->input('day7') != null) {
             $attendanceRegister = AttendanceRegister::where('dayOfWeek', '=', $request->input('day7'))->first();

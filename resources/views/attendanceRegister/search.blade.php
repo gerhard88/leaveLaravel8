@@ -49,9 +49,9 @@
                             <input type="date" name="start_date" style = "width:100px !important cursor:hand !important" value="{{ old('start_date') }}" required id="start_date" class='form-control' />
                         </div>
                     </div>
+                    {!! Form::submit('Search', array('class' => 'btn btn-primary')) !!}
+                    {!! Form::close() !!}
                 </div>
-                {!! Form::submit('Search', array('class' => 'btn btn-primary')) !!}
-                {!! Form::close() !!}
             </div>
         </div>
     </div>

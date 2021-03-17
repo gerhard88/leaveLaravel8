@@ -34,7 +34,7 @@
                 @if(Auth::user()->attReg == 'Y')
                     <div class="container pt-4 my-4 col-sm-4">
                         <h3>Attendance Register</h3>
-                        <a href="{!!URL::route('searchRegister') !!}">Attendance <br> Register</a>
+                        <a href="{!!URL::route('searchAttRegister') !!}">Attendance <br> Register</a>
                     </div>
                 @endif
                 <div class="container pt-4 my-4 col-sm-4">

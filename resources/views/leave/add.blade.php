@@ -15,7 +15,7 @@
                     <!-- if there are creation errors, they will show here -->
                     {!! HTML::ul($errors->all()) !!}
 
-                    {!! Form::open(array('route' => 'leave.store', 'method'=>'POST','files'=>true)) !!}
+                    {!! Form::open(array('route' => 'storeLeave', 'method'=>'POST','files'=>true)) !!}
 
                     {!! Form::hidden('employee_id', Request::old('employee_id'), array('class' => 'form-control', 'required', 'id'=>'employee_id')) !!}
 

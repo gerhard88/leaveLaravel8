@@ -190,9 +190,10 @@ class RoleController extends Controller
      * @param  \App\Models\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function edit(Role $role)
+    public function edit(Role $role, $id)
     {
-        //
+        $role = Role::find($id);
+        return view('role.edit', ['role' => $role]);
     }
 
     /**
@@ -202,9 +203,20 @@ class RoleController extends Controller
      * @param  \App\Models\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Role $role)
+    public function update(Request $request, Role $role, $id)
     {
-        //
+        $role = Role::find($id);
+        $role_check = Role::where('description', '=', $request->description)->get()->first();
+
+        if ($role_check && $role_check->id != $id)
+            return Redirect::route('edit', [$id])->withInput()->with('danger', 'User Role already exists');
+
+        $role->description = $request->description;
+
+        if ($role->update())
+            return Redirect::route('roles')->with('success', 'Successfully updated user role');
+        else
+            return Redirect::route('edit', [$id])->withInput()->withErrors($role->errors());
     }
 
     /**
