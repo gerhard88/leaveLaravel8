@@ -21,7 +21,7 @@
                     <!-- if there are creation errors, they will show here -->
                     {!! HTML::ul($errors->all()) !!}
 
-                    {!! Form::open(array('route' => 'attendanceRegister.store', 'method'=>'POST','files'=>true), array('employeesRegisterArray' => $employeesRegisterArray)) !!}
+                    {!! Form::open(array('route' => 'storeAttRegister', 'method'=>'POST','files'=>true), array('employeesRegisterArray' => $employeesRegisterArray)) !!}
 
                     <div class="row">
                         <div class="col-xs-6 text-left">
@@ -85,49 +85,49 @@
                                     <!-- Day1 -->
                                     @if($day1)
                                         <td class="table-text">
-                                            <input type="text" name="day1Register[]" value="{{ $employee->day1Reg }}" id="day1" class="form-control">
+                                            <input type="text" required name="day1Register[]" value="{{ $employee->day1Reg }}" id="day1" class="form-control">
                                         </td>
                                     @endif
 
                                 <!-- Day2 -->
                                     @if($day2)
                                         <td class="table-text">
-                                            <input type="text" name="day2Register[]" value="{{ $employee->day2Reg }}" id="day2" class="form-control">
+                                            <input type="text" required name="day2Register[]" value="{{ $employee->day2Reg }}" id="day2" class="form-control">
                                         </td>
                                     @endif
 
                                 <!-- Day3 -->
                                     @if($day3)
                                         <td class="table-text">
-                                            <input type="text" name="day3Register[]" value="{{ $employee->day3Reg }}" id="day3" class="form-control">
+                                            <input type="text" required name="day3Register[]" value="{{ $employee->day3Reg }}" id="day3" class="form-control">
                                         </td>
                                     @endif
 
                                 <!-- Day4 -->
                                     @if($day4)
                                         <td class="table-text">
-                                            <input type="text" name="day4Register[]" value="{{ $employee->day4Reg }}" id="day4" class="form-control">
+                                            <input type="text" required name="day4Register[]" value="{{ $employee->day4Reg }}" id="day4" class="form-control">
                                         </td>
                                     @endif
 
                                 <!-- Day5 -->
                                     @if($day5)
                                         <td class="table-text">
-                                            <input type="text" name="day5Register[]" value="{{ $employee->day5Reg }}" id="day5" class="form-control">
+                                            <input type="text" required name="day5Register[]" value="{{ $employee->day5Reg }}" id="day5" class="form-control">
                                         </td>
                                     @endif
 
                                 <!-- Day6 -->
                                     @if($day6)
                                         <td class="table-text">
-                                            <input type="text" name="day6Register[]" value="{{ $employee->day6Reg }}" id="day6" class="form-control">
+                                            <input type="text" required name="day6Register[]" value="{{ $employee->day6Reg }}" id="day6" class="form-control">
                                         </td>
                                     @endif
 
                                 <!-- Day7 -->
                                     @if($day7)
                                         <td class="table-text">
-                                            <input type="text" name="day7Register[]" value="{{ $employee->day7Reg }}" id="day7" class="form-control">
+                                            <input type="text" required name="day7Register[]" value="{{ $employee->day7Reg }}" id="day7" class="form-control">
                                         </td>
                                     @endif
                                 </tr>
@@ -146,7 +146,7 @@
                             <div class="alert alert-info" role="alert">No employees are available</div>
                         @endif
                     </table>
-                    <a href="{!!URL::route('attendanceRegister.search')!!}" class="btn btn-info" role="button">Cancel</a>
+                    <a href="{!!URL::route('searchAttRegister')!!}" class="btn btn-info" role="button">Cancel</a>
                     {!! Form::submit('Add', array('class' => 'btn btn-primary')) !!}
                     {!! Form::close() !!}
                 </div>

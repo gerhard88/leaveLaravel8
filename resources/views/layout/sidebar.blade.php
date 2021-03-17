@@ -18,7 +18,7 @@
                             <li><a href="{!!URL::route('employees')!!}">Employees</a></li>
                         @endif
                         @if(Auth::user()->attReg == 'Y')
-                            <li><a href="{!!URL::route('searchRegister')!!}">Attendance Register</a></li>
+                            <li><a href="{!!URL::route('searchAttRegister')!!}">Attendance Register</a></li>
                         @endif
                         @if(Auth::user()->leaveCapture == 'Y')
                             <li><a href="{!!URL::route('addLeave')!!}">Leave Application</a></li>
