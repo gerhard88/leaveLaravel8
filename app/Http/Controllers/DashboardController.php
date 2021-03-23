@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Acaronlex\LaravelCalendar\Facades\Calendar;
 use App\Models\Employee;
 use App\Models\Leave;
 use App\Models\LeaveType;
 use Illuminate\Http\Request;
+
 
 class DashboardController extends Controller
 {
@@ -53,6 +55,7 @@ class DashboardController extends Controller
                     null,
                     // Add color
                     [
+                        'url' => 'http://full-calendar.io',
                         'color'     => '#000000',
                         'textColor' => '#008000',
                     ]

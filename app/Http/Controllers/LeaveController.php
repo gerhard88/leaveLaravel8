@@ -7,6 +7,7 @@ use App\Models\Leave;
 use App\Models\LeaveCalculation;
 use App\Models\LeaveType;
 use Carbon\Carbon;
+use Faker\Provider\cs_CZ\DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -24,11 +25,34 @@ class LeaveController extends Controller
             ->where('surname', '=', Auth::user()->surname)->first();
 
         if ($employee)
-            $employees = Employee::where('company_id', '=', $employee->company_id)->get();
+            $employees = Employee::where('company_id', '=', $employee->company_id)
+                ->where('employee_status', '=', 'A')->get();
         else
-            $employees = Employee::all();
-        $leaves = Leave::all();
-        return view('leave.index', compact('employees', 'leaves'));
+            $employees = Employee::where('employee_status', '=', 'A')->get();
+
+        $leaveApplications = array();
+        foreach ($employees as $employee)
+        {
+            $leaves = Leave::where('employee_id', '=', $employee->id)
+                ->where('approved', '=', 'N')->get();
+            if ($leaves)
+            {
+                foreach ($leaves as $leave)
+                {
+                    $leaveApplication = new LeaveApplication();
+                    $leaveApplication->leaveId = $leave->id;
+                    $leaveApplication->employeeNo = $employee->employee_no;
+                    $leaveApplication->name = $employee->name;
+                    $leaveApplication->surname = $employee->surname;
+                    $leaveType = LeaveType::where('id', '=', $leave->leaveType_id)->first();
+                    $leaveApplication->leaveType = $leaveType->type;
+                    $leaveApplication->start_date = $leave->start_date;
+                    $leaveApplication->end_date = $leave->end_date;
+                    array_push($leaveApplications, $leaveApplication);
+                }
+            }
+        }
+        return view('leave.index', compact('leaveApplications'));
     }
 
     /**
@@ -38,8 +62,22 @@ class LeaveController extends Controller
      */
     public function add()
     {
+        $pieces = array_filter( explode("?",$_SERVER['QUERY_STRING'] ));
+        $params = array();
+        //add all the parameters into a array called $params
+        foreach ($pieces as $param) {
+            list($name, $value) = explode('=', $param, 2);
+            $params[urldecode($name)][] = urldecode($value);
+        }
+        if (array_key_exists("id",$params))
+        {
+            $employeesQuery = Employee::where('id', '>', 0);
+            $employeesQuery = $employeesQuery->wherein('id', $params["id"]);
+            $employee = $employeesQuery->first();
+        } else
+            $employee = null;
         $leaveTypes = LeaveType::all();
-        return view('leave.add', compact('leaveTypes'));
+        return view('leave.add', compact('leaveTypes', 'employee'));
     }
 
     /**
@@ -50,8 +88,12 @@ class LeaveController extends Controller
      */
     public function store(Request $request)
     {
-        $employee = Employee::where('name', '=', $request->input('nameAuto'))
-            ->where('surname', '=', $request->input('surname'))->first();
+        if ($request->employee_id == null)
+            $employee = Employee::where('name', '=', $request->input('name'))
+                ->where('surname', '=', $request->input('surname'))->first();
+        else
+            $employee = Employee::where('name', '=', $request->input('nameAuto'))
+                ->where('surname', '=', $request->input('surname'))->first();
 
         $input = $request->all();
         $leave = new Leave($input);
@@ -82,9 +124,11 @@ class LeaveController extends Controller
      */
     public function edit(Leave $leave, $id)
     {
-        $employee = Employee::find($id);
-        $leave = Leave::all();
-        return view('editLeave', compact('employee', 'leave'));
+        $leave = Leave::find($id);
+        $leaveTypes = LeaveType::all();
+        $employee = Employee::where('id', '=', $leave->employee_id)->first();
+        $lid = Leave::find($id)->leaveType_id;
+        return view('leave.edit', compact('leave', 'leaveTypes', 'employee', 'lid'));
     }
 
     /**
@@ -94,9 +138,17 @@ class LeaveController extends Controller
      * @param  \App\Models\Leave  $leave
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Leave $leave)
+    public function update(Request $request, Leave $leave, $id)
     {
-        //
+        $leave = Leave::find($id);
+        $leave->start_date = $request->start_date;
+        $leave->end_date = $request->end_date;
+        $leave->leaveType_id = $request->leaveType_id;
+
+        if ($leave->update())
+            return Redirect::route('leaves')->with('success', 'Successfully updated leave');
+        else
+            return Redirect::route('editLeave', [$id])->withInput()->withErrors($leave->errors());
     }
 
     /**
@@ -105,39 +157,49 @@ class LeaveController extends Controller
      * @param  \App\Models\Leave  $leave
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Leave $leave)
+    public function destroy(Leave $leave, $id)
     {
-        //
+        $leave = Leave::find($id);
+        if ($leave->delete())
+            return Redirect::route('leaves')->with('warning', 'Employees" leave has been cancelled');
+        else
+            return Redirect::route('leaves')->withInput()->withErrors($leave->errors());
     }
-    public function approveLeave(Reequest $request, $id)
+    public function approve(Request $request, $id)
     {
-        $employee = Employee::find($id);
-
-        $date1 = Carbon::createFromFormat('Y-m-d', $request->input('start_date'));
-        $date2 = Carbon::createFromFormat('Y-m-d', $request->input('end_date'));
-        $interval = $date1->diffInDays($date2);
+        $leave = Leave::find($id);
+        $date1 = new Carbon($leave->start_date);
+        $date2 = new Carbon($leave->end_date);
+        $interval = $date1->diffInWeekdays($date2);
         $days = ++$interval;
 
-        $leaveType = LeaveType::where('id', '=', $request->input('leaveType_id'))->first();
-        $leaveCalculation = LeaveCalculation::where('leaveType_id', '=', $leaveType->id)
-            ->where('employee_id', '=', $employee->id)->first();
+        $leaveCalculation = LeaveCalculation::where('leaveType_id', '=', $leave->leaveType_id)
+            ->where('employee_id', '=', $leave->employee_id)->first();
 
         if ($leaveCalculation) {
-            if ($days > $leaveCalculation->leaveDays_available)
-                return Redirect::route('leave.add')->with('warning', 'Available leave days are less than applied days!');
+            //if ($days > $leaveCalculation->leaveDays_available)
+            //    return Redirect::route('leave.add')->with('warning', 'Available leave days are less than applied days!');
 
-            $leaveCalculation->leaveDays_available = $leaveCalculation->leaveDays_available - $days;
+            $leaveCalculation->leaveDays_accumulated = $leaveCalculation->leaveDays_accumulated - $days;
             $leaveCalculation->leaveDays_taken = $leaveCalculation->leaveDays_taken + $days;
-            $leaveCalculation->update();
+
+            $leave->approved = 'Y';
+            $leave->update();
+
+            if ($leaveCalculation->update())
+                return Redirect::route('leaves')->with('success', 'Successfully approved leave for employee');
+            else
+                return Redirect::route('leaves')->withInput()->withErrors($leave->errors());
         }
-
-        $input = $request->all();
-        $leave = new Leave($input);
-        $leave->employee_id = $employee->id;
-
-        if ($leave->save())
-            return Redirect::route('annualLeave')->with('success', 'Successfully captured leave for employee!');
-        else
-            return Redirect::route('addLeave')->withInput()->withErrors($leave->errors());
     }
 }
+class LeaveApplication {
+    public $leaveId;
+    public $employeeNo;
+    public $name;
+    public $surname;
+    public $leaveType;
+    public $start_date;
+    public $end_date;
+}
+

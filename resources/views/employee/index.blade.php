@@ -2,6 +2,9 @@
 
 @extends('layout/layout')
 
+<script src="https://cdn.datatables.net/fixedcolumns/3.3.2/css/fixedColumns.dataTables.min.css" type="text/javascript"></script>
+<script src="https://cdn.datatables.net/fixedcolumns/3.3.2/js/dataTables.fixedColumns.min.js" type="text/javascript"></script>
+
 @section('content')
     <!-- List Employee Form... -->
 
@@ -92,7 +95,7 @@
                                         <div>
                                             {!! Form::model($employee, ['method' => 'GET', 'route' => ['editEmployee', $employee->id]]) !!}
                                             <button type="submit" class="btn btn-warning"><i class="fa fa-trash"></i></i> Edit </button>
-                                            <a href="{!!URL::route('addLeave')!!}" class="btn btn-warning">Apply Leave</a>
+                                            <a href="{!!URL::route('addLeave', ['id' => $employee->id])!!}" class="btn btn-warning">Apply Leave</a>
                                             <a href="{!!URL::route('destroyEmployee', ['id' => $employee->id])!!}" class="btn btn-danger"
                                                onclick="return confirm('Are you sure about terminating the employee?')">Terminate</a>
                                             {!! Form::close() !!}
@@ -112,7 +115,8 @@
     <script>
         $(document).ready(function() {
             $('#dataTable').DataTable({
-                "scrollX": true
+                "scrollX": true,
+                "fixedColumns": true
             });
         });
     </script>

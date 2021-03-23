@@ -74,7 +74,7 @@
 
                                     <!-- Employee Name -->
                                     <td class="table-text">
-                                        <div>{{ $employee->name }}</div>
+                                        <a href="{!!URL::route('editEmployee', ['id' => $employee->id])!!}">{{ $employee->name }}</a>
                                     </td>
 
                                     <!-- Employee Type -->

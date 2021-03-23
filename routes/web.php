@@ -14,6 +14,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\AttendanceRegisterController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\LeaveController;
+use App\Http\Controllers\FullCalendarController;
 
 /*
 |--------------------------------------------------------------------------
@@ -231,7 +232,10 @@ Route::get('leave/edit/{id}', [LeaveController::class, 'edit'])->name('editLeave
 Route::PATCH('leave/update/{id}', [LeaveController::class, 'update'])->name('updateLeave');
 
 // approve leave
-Route::get('leave/approve/{id}', [LeaveController::class, 'approve'])->name('approve');
+Route::get('leave/approve/{id}', [LeaveController::class, 'approve'])->name('approveLeave');
+
+// cancel leave
+Route::get('leave/destroy/{id}', [LeaveController::class, 'destroy'])->name('destroyLeave');
 
 // route to list annual leave balances
 Route::get('reports/annualLeave', [ReportController::class, 'annualLeave'])->name('annualLeave');
@@ -258,10 +262,12 @@ Route::get('paginateLeft', [AttendanceRegisterController::class, 'paginateLeft']
 Route::get('paginateRight', [AttendanceRegisterController::class, 'paginateRight'])->name('paginateRight');
 
 //route to display calendar view
-Route::get('calendar/view', [DashboardController::class, 'view'])->name('calendar');
+//Route::get('calendar', [DashboardController::class, 'view'])->name('calendar');
 
 // get the ajaxfunction for employee names
 Route::get('getNameData', [EmployeeController::class, 'getNameData']);
+
+Route::get('calendar', [FullCalendarController::class, 'index'])->name('calendar');
 
 // route to secure routes
 Route::group(['middleware' => ['myMiddleware']], function () {
