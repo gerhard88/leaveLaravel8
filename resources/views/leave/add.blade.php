@@ -15,20 +15,36 @@
                     <!-- if there are creation errors, they will show here -->
                     {!! HTML::ul($errors->all()) !!}
 
-                    {!! Form::open(array('route' => 'storeLeave', 'method'=>'POST','files'=>true)) !!}
+                    @if($employee == null)
+                        {!! Form::open(array('route' => 'storeLeave', 'method'=>'POST','files'=>true)) !!}
+                    @else
+                        {!! Form::model($employee, array('route' => array('storeLeave', $employee->id), 'files'=>true, 'method' => 'POST')) !!}
+                    @endif
 
                     {!! Form::hidden('employee_id', Request::old('employee_id'), array('class' => 'form-control', 'required', 'id'=>'employee_id')) !!}
 
                     <div class="col-sm-4 col-md-4">
-                        <div class="form-group">
-                            {!! Form::label('nameAuto', 'Name') !!}
-                            {!! Form::text('nameAuto', Request::old('nameAuto'), array('class' => 'form-control', 'id'=> 'nameAuto')) !!}
-                        </div>
+                        @if($employee == null)
+                            <div class="form-group">
+                                {!! Form::label('nameAuto', 'Name') !!}
+                                {!! Form::text('nameAuto', Request::old('nameAuto'), array('class' => 'form-control', 'id'=> 'nameAuto')) !!}
+                            </div>
 
-                        <div class="form-group">
-                            {!! Form::label('surname', 'Surname') !!}
-                            {!! Form::text('surname', Request::old('surname'), array('class' => 'form-control', 'id' => 'surname')) !!}
-                        </div>
+                            <div class="form-group">
+                                {!! Form::label('surname', 'Surname') !!}
+                                {!! Form::text('surname', Request::old('surname'), array('class' => 'form-control', 'id' => 'surname')) !!}
+                            </div>
+                        @else
+                            <div class="form-group">
+                                {!! Form::label('name', 'Name') !!}
+                                {!! Form::text('name', $employee->name, array('class' => 'form-control', 'required')) !!}
+                            </div>
+
+                            <div class="form-group">
+                                {!! Form::label('surname', 'Surname') !!}
+                                {!! Form::text('surname', $employee->surname, array('class' => 'form-control', 'required')) !!}
+                            </div>
+                        @endif
 
                         <div class="form-group">
                             {!! Form::Label('leaveType_id', 'Leave Type') !!}
@@ -61,7 +77,7 @@
                     </div>
 
                     <div class="col-xs-12 col-sm-12 col-md-12">
-                        <a href="{!!URL::route('annualLeave')!!}" class="btn btn-info" role="button">Cancel</a>
+                        <a href="{!!URL::route('leaves')!!}" class="btn btn-info" role="button">Cancel</a>
                         {!! Form::submit('Add', array('class' => 'btn btn-primary')) !!}
                     </div>
 
