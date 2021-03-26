@@ -6,10 +6,13 @@ use App\Models\Company;
 use App\Models\Country;
 use App\Models\Department;
 use App\Models\Employee;
+use App\Models\EmployeeHistory;
 use App\Models\EmployeeType;
 use App\Models\LeaveCalculation;
 use App\Models\LeaveType;
+use App\Models\Role;
 use App\Models\Team;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -34,13 +37,17 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        $employee = Employee::where('name', '=', Auth::user()->name)
+        $user = User::where('name', '=', Auth::user()->name)
             ->where('surname', '=', Auth::user()->surname)->first();
-        if ($employee)
-            $employees = Employee::where('company_id', '=', $employee->company_id)
-                ->where('employee_status', '=', 'A')->get();
-        else
+
+        $role = Role::where('description', 'like', '%' . 'uper' . '%')->first();
+
+        if ($role->id == $user->role_id)
             $employees = Employee::where('employee_status', '=', 'A')->get();
+        else
+            $employees = Employee::where('company_id', '=', $user->company_id)
+                ->where('employee_status', '=', 'A')->get();
+
         $employeesArray = array();
 
         foreach ($employees as $employee)
@@ -70,18 +77,26 @@ class EmployeeController extends Controller
      */
     public function add()
     {
-        $employee = Employee::where('name', '=', Auth::user()->name)
+        $user = User::where('name', '=', Auth::user()->name)
             ->where('surname', '=', Auth::user()->surname)->first();
-        if ($employee) {
-            $companies = Company::where('id', '=', $employee->company_id)->get();
-            $departments = Department::where('company_id', '=', $employee->company_id)->get();
-            $teams = Team::where('company_id', '=', $employee->company_id)->get();
-        } else {
+
+        $role = Role::where('description', 'like', '%' . 'uper' . '%')->first();
+
+        if ($role->id == $user->role_id) {
+            $countries = Country::all();
             $companies = Company::all();
             $departments = Department::all();
             $teams = Team::all();
+        } else {
+            $companies = Company::where('id', '=', $user->company_id)->get();
+            foreach ($companies as $company)
+            {
+                if ($company->id == $user->company_id)
+                    $countries = Country::where('id', '=', $company->country_id)->get();
+            }
+            $departments = Department::where('company_id', '=', $user->company_id)->get();
+            $teams = Team::where('company_id', '=', $user->company_id)->get();
         }
-        $countries = Country::all();
         $employeeTypes = EmployeeType::all();
         $leaveTypes = LeaveType::all();
         return view('employee.add', compact('countries', 'companies', 'departments', 'teams', 'employeeTypes', 'leaveTypes'));
@@ -128,8 +143,10 @@ class EmployeeController extends Controller
         }
         $idN = $request->idNo;
         $dob = $request->dob;
-        if (substr($idN, 0, 2) != substr($dob, 2, 2) or substr($idN, 2, 2) != substr($dob, 5, 2) or substr($idN, 4, 2) != substr($dob, 8, 2))
-            return Redirect::route('addEmployee')->withInput()->with('warning', 'First 6 characters of ID no & date of birth are not equal!');
+        if ($request->idType == 'RSA ID') {
+            if (substr($idN, 0, 2) != substr($dob, 2, 2) or substr($idN, 2, 2) != substr($dob, 5, 2) or substr($idN, 4, 2) != substr($dob, 8, 2))
+                return Redirect::route('addEmployee')->withInput()->with('warning', 'First 6 characters of ID no & date of birth are not equal!');
+        }
 
         if ($request->annual == null && $request->sick == null && $request->public == null && $request->study == null &&
             $request->family == null && $request->maternity == null && $request->commissioning == null &&
@@ -262,18 +279,25 @@ class EmployeeController extends Controller
     {
         $employee = Employee::find($id);
 
-        $login_employee = Employee::where('name', '=', Auth::user()->name)
+        $user = User::where('name', '=', Auth::user()->name)
             ->where('surname', '=', Auth::user()->surname)->first();
-        if ($login_employee) {
-            $countries = Country::find($login_employee->country_id);
-            $companies = Company::where('id', '=', $login_employee->company_id)->get();
-            $departments = Department::where('company_id', '=', $login_employee->company_id)->get();
-            $teams = Team::where('company_id', '=', $login_employee->company_id)->get();
-        } else {
+
+        $role = Role::where('description', 'like', '%' . 'uper' . '%')->first();
+
+        if ($role->id == $user->role_id) {
             $countries = Country::all();
             $companies = Company::all();
             $departments = Department::all();
             $teams = Team::all();
+        } else {
+            $companies = Company::where('id', '=', $user->company_id)->get();
+            foreach ($companies as $company)
+            {
+                if ($company->id == $user->company_id)
+                    $countries = Country::where('id', '=', $company->country_id)->get();
+            }
+            $departments = Department::where('company_id', '=', $user->company_id)->get();
+            $teams = Team::where('company_id', '=', $user->company_id)->get();
         }
         $employeeTypes = EmployeeType::all();
         $leaveCalculations = LeaveCalculation::where('employee_id', '=', $employee->id)->get();
@@ -591,7 +615,8 @@ class EmployeeController extends Controller
     {
         $employee = Employee::findOrFail($id);
 
-        if ($employee) {
+        if ($employee)
+        {
             $employeeHistory = new EmployeeHistory();
             $employeeHistory->employee_no = $employee->employee_no;
             $employeeHistory->surname = $employee->surname;
@@ -625,13 +650,16 @@ class EmployeeController extends Controller
         $employee_name = $request->input('nameAuto');
         $employeesInfo = array();
 
-        $employee = Employee::where('name', '=', Auth::user()->name)
+        $user = User::where('name', '=', Auth::user()->name)
             ->where('surname', '=', Auth::user()->surname)->first();
-        if ($employee)
-            $employees = DB::table('employees')->where('company_id', '=', $employee->company_id)
-                ->where('name', 'LIKE', "%{$employee_name}%")->orderBy('name')->get();
-        else
+
+        $role = Role::where('description', 'like', '%' . 'uper' . '%')->first();
+
+        if ($role->id == $user->role_id)
             $employees = DB::table('employees')->where('name', 'LIKE', "%{$employee_name}%")->orderBy('name')->get();
+        else
+            $employees = DB::table('employees')->where('company_id', '=', $user->company_id)
+                ->where('name', 'LIKE', "%{$employee_name}%")->orderBy('name')->get();
 
         foreach ($employees as $employee) {
             $employeeInfo = new EmployeeInfo();

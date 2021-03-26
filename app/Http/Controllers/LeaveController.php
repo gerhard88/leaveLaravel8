@@ -6,8 +6,9 @@ use App\Models\Employee;
 use App\Models\Leave;
 use App\Models\LeaveCalculation;
 use App\Models\LeaveType;
+use App\Models\Role;
+use App\Models\User;
 use Carbon\Carbon;
-use Faker\Provider\cs_CZ\DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -21,14 +22,16 @@ class LeaveController extends Controller
      */
     public function index()
     {
-        $employee = Employee::where('name', '=', Auth::user()->name)
+        $user = User::where('name', '=', Auth::user()->name)
             ->where('surname', '=', Auth::user()->surname)->first();
 
-        if ($employee)
-            $employees = Employee::where('company_id', '=', $employee->company_id)
-                ->where('employee_status', '=', 'A')->get();
-        else
+        $role = Role::where('description', 'like', '%' . 'uper' . '%')->first();
+
+        if ($role->id == $user->role_id)
             $employees = Employee::where('employee_status', '=', 'A')->get();
+        else
+            $employees = Employee::where('company_id', '=', $user->company_id)
+                ->where('employee_status', '=', 'A')->get();
 
         $leaveApplications = array();
         foreach ($employees as $employee)
@@ -160,8 +163,9 @@ class LeaveController extends Controller
     public function destroy(Leave $leave, $id)
     {
         $leave = Leave::find($id);
-        if ($leave->delete())
-            return Redirect::route('leaves')->with('warning', 'Employees" leave has been cancelled');
+        $leave->approved = 'C';
+        if ($leave->update())
+            return Redirect::route('leaves')->with('warning', "Employees's leave has been cancelled");
         else
             return Redirect::route('leaves')->withInput()->withErrors($leave->errors());
     }

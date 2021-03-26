@@ -2,13 +2,12 @@
 
 @extends('layout/layout')
 
-<script src="https://cdn.datatables.net/fixedcolumns/3.3.2/css/fixedColumns.dataTables.min.css" type="text/javascript"></script>
-<script src="https://cdn.datatables.net/fixedcolumns/3.3.2/js/dataTables.fixedColumns.min.js" type="text/javascript"></script>
-
 @section('content')
     <!-- List Employee Form... -->
 
     <!-- Current Employees -->
+
+    <script src="https://cdn.datatables.net/fixedcolumns/3.3.2/js/dataTables.fixedColumns.min.js" type="text/javascript"></script>
 
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12">
@@ -29,9 +28,9 @@
 
                         <!-- Table Headings -->
                         <thead>
-                            <th>Name</th>
-                            <th>Surname</th>
                             <th>Employee No</th>
+                            <th>Surname</th>
+                            <th>Name</th>
                             <th>Date of Birth</th>
                             <th>ID No</th>
                             <th>Gender</th>
@@ -47,17 +46,17 @@
                         <tbody>
                             @foreach ($employeesArray as $employee)
                                 <tr>
-                                    <!-- Name -->
+                                    <!-- Employee No -->
                                     <td class="table-text">
-                                        <div>{{ $employee->name }}</div>
+                                        <div>{{ $employee->employeeNo }}</div>
                                     </td>
                                     <!-- Surname -->
                                     <td class="table-text">
                                         <div>{{ $employee->surname }}</div>
                                     </td>
-                                    <!-- Employee No -->
+                                    <!-- Name -->
                                     <td class="table-text">
-                                        <div>{{ $employee->employeeNo }}</div>
+                                        <div>{{ $employee->name }}</div>
                                     </td>
                                     <!-- Date of Birth -->
                                     <td class="table-text">
@@ -115,8 +114,13 @@
     <script>
         $(document).ready(function() {
             $('#dataTable').DataTable({
-                "scrollX": true,
-                "fixedColumns": true
+                scrollX:        true,
+                scrollCollapse: true,
+                paging:         true,
+                fixedColumns:   {
+                    leftColumns: 0,
+                    rightColumns: 1
+                }
             });
         });
     </script>

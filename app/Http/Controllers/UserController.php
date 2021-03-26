@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Company;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\UserFunction;
@@ -18,7 +19,8 @@ class UserController extends Controller
      * the controller to reuse the rules.
      */
     protected $validationRules=[
-        'role_id' => 'required|numeric|digits_between:1,9999',
+        'role_id'    => 'required|numeric|digits_between:1,9999',
+        'company_id' => 'required|numeric|digits_between:1,9999',
     ];
 
     /**
@@ -30,7 +32,8 @@ class UserController extends Controller
     {
         $users = User::all();
         $roles = Role::all();
-        return view('user.index', compact('users', 'roles'));
+        $companies = Company::all();
+        return view('user.index', compact('users', 'roles', 'companies'));
     }
 
     /**
@@ -41,7 +44,8 @@ class UserController extends Controller
     public function add()
     {
         $roles = Role::all();
-        return view('user.add', compact('roles'));
+        $companies = Company::all();
+        return view('user.add', compact('roles', 'companies'));
     }
 
     /**
@@ -59,6 +63,7 @@ class UserController extends Controller
         $input = $request->all();
         $user = new User($input);
         $user->password = Hash::make($request->password);
+        $user->company_id = $request->company_id;
 
         $exists = User::where('email', '=', $user->email)->first();
         if ($exists)
@@ -159,7 +164,8 @@ class UserController extends Controller
     {
         $user = User::find($id);
         $roles = Role::all();
-        return view('user.edit', compact('user', 'roles'));
+        $companies = Company::all();
+        return view('user.edit', compact('user', 'roles', 'companies'));
     }
 
     /**
@@ -195,6 +201,7 @@ class UserController extends Controller
         $user->attReg = 'N'; $user->leaveCapture = 'N'; $user->leaveApprove = 'N';
         $user->settings = 'N'; $user->reportView = 'N';
         $user->role_id = $request->role_id;
+        $user->company_id = $request->company_id;
 
         $exists = User::where('email', '=', $user->email)->first();
         if ($exists && $exists->id != $id)

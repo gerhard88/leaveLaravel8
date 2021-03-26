@@ -42,6 +42,19 @@
                     </div>
 
                     <div class="form-group">
+                        {!! Form::label('company_id', 'Company Name') !!}
+                        <select class="form-control input-sm" required name="company_id" id="company_id">
+                            @foreach($companies as $company)
+                                @if($company['id'] == $user['company_id'])
+                                    <option value="{{$user['company_id']}}" selected="{{$user['company_id']}}">{{$company['name']}}</option>
+                                @else
+                                    <option value="{{$company->id}}">{{$company->name}}</option>
+                                @endif
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="form-group">
                         {!! Form::label('email', 'Email') !!}
                         {!! Form::email('email', $user->email, array('class' => 'form-control', 'required')) !!}
                     </div>

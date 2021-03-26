@@ -243,6 +243,12 @@ Route::get('reports/annualLeave', [ReportController::class, 'annualLeave'])->nam
 // route to list sick leave balances
 Route::get('reports/sickLeave', [ReportController::class, 'sickLeave'])->name('sickLeave');
 
+// route to search leave type
+Route::get('reports/leaveRequests', [ReportController::class, 'leaveRequests'])->name('leaveRequests');
+
+// route to list employees leave request
+Route::get('reports/leaveSummary', [ReportController::class, 'index'])->name('leaveSummary');
+
 // route to report on settings
 Route::get('settings', [ReportController::class, 'settings'])->name('settings');
 

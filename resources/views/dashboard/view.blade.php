@@ -53,20 +53,32 @@
                                 @if(Auth::user()->createRole == 'Y')
                                     <a href="{!! URL::route('roles') !!}">User Roles</a>
                                 @endif
-                                @if(Auth::user()->addUser == 'Y')
-                                    <a href="{!! URL::route('users') !!}">Users</a>
-                                @endif
                                 @if(Auth::user()->addCountry == 'Y')
                                     <a href="{!! URL::route('countries') !!}">Countries</a>
                                 @endif
                                 @if(Auth::user()->addCompany == 'Y')
-                                    <a href="{!! URL::route('companies') !!}">Companies</a>
+                                    @if(Auth::user()->updateCompany == 'Y')
+                                        <a href="{!! URL::route('companies') !!}">Companies</a>
+                                    @else
+                                        <a href="{!! URL::route('addCompany') !!}">Add Company</a>
+                                    @endif
+                                @endif
+                                @if(Auth::user()->addUser == 'Y')
+                                    <a href="{!! URL::route('users') !!}">Users</a>
                                 @endif
                                 @if(Auth::user()->addDept == 'Y')
-                                    <a href="{!! URL::route('departments') !!}">Departments</a>
+                                    @if(Auth::user()->updateDept == 'Y')
+                                        <a href="{!! URL::route('departments') !!}">Departments</a>
+                                    @else
+                                        <a href="{!! URL::route('addDepartment') !!}">Add Department</a>
+                                    @endif
                                 @endif
                                 @if(Auth::user()->addTeam == 'Y')
-                                    <a href="{!! URL::route('teams') !!}">Teams</a>
+                                    @if(Auth::user()->updateTeam == 'Y')
+                                        <a href="{!! URL::route('teams') !!}">Teams</a>
+                                    @else
+                                        <a href="{!! URL::route('addTeam') !!}">Add Team</a>
+                                    @endif
                                 @endif
                                 @if(Auth::user()->addEmployeeType == 'Y')
                                     <a href="{!! URL::route('employeeTypes') !!}">Employee Types</a>
@@ -87,6 +99,7 @@
                             <div class="settings-content">
                                 <a href="{!! URL::route('annualLeave') !!}">Annual Leave</a>
                                 <a href="{!! URL::route('sickLeave') !!}">Sick Leave</a>
+                                <a href="{!! URL::route('leaveRequests') !!}">Leave Requests</a>
                             </div>
                         </div>
                     </div>

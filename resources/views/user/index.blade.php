@@ -25,16 +25,17 @@
                     @if (count($users) > 0)
 
                         <!-- Table Headings -->
-                            <thead>
+                        <thead>
                             <th>Name</th>
                             <th>Surname</th>
-                            <th>User Role</th>
                             <th>Email Address</th>
+                            <th>User Role</th>
+                            <th>Company Name</th>
                             <th>Action</th>
-                            </thead>
+                        </thead>
 
-                            <!-- Table Body -->
-                            <tbody>
+                        <!-- Table Body -->
+                        <tbody>
                             @foreach ($users as $user)
                                 <tr>
                                     <!-- Name -->
@@ -47,6 +48,11 @@
                                         <div>{{ $user->surname }}</div>
                                     </td>
 
+                                    <!-- User Email Address -->
+                                    <td class="table-text">
+                                        <div>{{ $user->email }}</div>
+                                    </td>
+
                                     <!-- User Role -->
                                     <td class="table-text">
                                         @foreach($roles as $role)
@@ -56,9 +62,13 @@
                                         @endforeach
                                     </td>
 
-                                    <!-- User Email Address -->
+                                    <!-- Company Name -->
                                     <td class="table-text">
-                                        <div>{{ $user->email }}</div>
+                                        @foreach($companies as $company)
+                                            @if($company['id'] == $user->company_id)
+                                                <option value="{{$company->id}}">{{$company->name}}</option>
+                                            @endif
+                                        @endforeach
                                     </td>
 
                                     <td>

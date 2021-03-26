@@ -18,7 +18,7 @@ class CreateLeavesTable extends Migration
                 $table->id();
                 $table->date('start_date');
                 $table->date('end_date');
-                $table->enum('approved', ['Y', 'N'])->default('N');
+                $table->enum('approved', ['Y', 'N', 'C'])->default('N');
                 $table->unsignedBigInteger('leaveType_id');
                 $table->unsignedBigInteger('employee_id');
                 $table->timestamps();

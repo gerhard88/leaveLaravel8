@@ -38,7 +38,11 @@
                     </div>
 
                     <div class="col-xs-12 col-sm-12 col-md-12">
-                        <a href="{!!URL::route('companies')!!}" class="btn btn-info" role="button">Cancel</a>
+                        @auth()
+                            <a href="{!!URL::route('companies')!!}" class="btn btn-info" role="button">Cancel</a>
+                        @else
+                            <a href="{!!URL::previous()!!}" class="btn btn-info" role="button">Back</a>
+                        @endif
                         {!! Form::submit('Add', array('class' => 'btn btn-primary')) !!}
                     </div>
                     {!! Form::close() !!}
