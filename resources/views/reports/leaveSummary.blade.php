@@ -1,11 +1,9 @@
-<!-- app/views/reports/annualLeave.blade.php -->
+<!-- app/views/reports/leaveSummary.blade.php -->
 
 @extends('layout/layout')
 
 @section('content')
-    <!-- List Annual Leave Form... -->
-
-    <!-- Annual Leave Balances -->
+    <!-- List Employee Leave Report Form... -->
 
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12">
@@ -13,16 +11,13 @@
                 <div class="panel-heading">
                     <div class="row">
                         <div class="col-xs-6">
-                            <h4>Employee Annual Leave Balances</h4>
-                        </div>
-                        <div class="col-xs-6 text-right">
-                            <a href="../leave/add" role="button" class="btn btn-default">Capture Leave</a>
+                            <h4>Summary of Leave Request</h4>
                         </div>
                     </div>
                 </div>
                 <div class="panel-body">
                     <table class="table table-striped" id="dataTable">
-                    @if (count($annualLeaveBalances) > 0)
+                    @if (count($leaveSummaries) > 0)
 
                         <!-- Table Headings -->
                         <thead>
@@ -30,48 +25,53 @@
                             <th>Surname</th>
                             <th>Name</th>
                             <th>Start Date</th>
-                            <th>Accumulated Leave Days</th>
-                            <th>Days Taken</th>
-                            <th>Days Remaining</th>
+                            <th>End Date</th>
+                            <th>Duration</th>
+                            <th>Leave Type</th>
+                            <th>Status</th>
                         </thead>
 
                         <!-- Table Body -->
                         <tbody>
-                            @foreach ($annualLeaveBalances as $employee)
+                            @foreach ($leaveSummaries as $summary)
                                 <tr>
                                     <!-- Employee No -->
                                     <td class="table-text">
-                                        <div>{{ $employee->employeeNo }}</div>
+                                        <div>{{ $summary->employeeNo }}</div>
                                     </td>
                                     <!-- Surname -->
                                     <td class="table-text">
-                                        <div>{{ $employee->surname }}</div>
+                                        <div>{{ $summary->employeeSurname }}</div>
                                     </td>
                                     <!-- Name -->
                                     <td class="table-text">
-                                        <div>{{ $employee->name }}</div>
+                                        <div>{{ $summary->employeeName }}</div>
                                     </td>
                                     <!-- Start Date -->
                                     <td class="table-text">
-                                        <div>{{ $employee->startDate }}</div>
+                                        <div>{{ $summary->leaveStart }}</div>
                                     </td>
-                                    <!-- Accumulated Leave Days -->
+                                    <!-- End Date -->
                                     <td class="table-text">
-                                        <div>{{ $employee->accumulatedLeave }}</div>
+                                        <div>{{ $summary->leaveEnd }}</div>
                                     </td>
-                                    <!-- Leave Days Taken -->
+                                    <!-- Duration -->
                                     <td class="table-text">
-                                        <div>{{ $employee->daysTaken }}</div>
+                                        <div>{{ $summary->duration }}</div>
                                     </td>
-                                    <!-- Leave Days Remaining -->
+                                    <!-- Leave Type -->
                                     <td class="table-text">
-                                        <div>{{ $employee->daysRemaining }}</div>
+                                        <div>{{ $summary->leaveType }}</div>
+                                    </td>
+                                    <!-- Leave Status -->
+                                    <td class="table-text">
+                                        <div>{{ $summary->leaveStatus }}</div>
                                     </td>
                                 </tr>
                             @endforeach
                         </tbody>
                     @else
-                        <div class="alert alert-info" role="alert">No annual leave balances are available</div>
+                        <div class="alert alert-info" role="alert">No leave summaries are available</div>
                     @endif
                     </table>
                 </div>

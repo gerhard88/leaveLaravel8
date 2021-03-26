@@ -80,13 +80,12 @@
                         <a href="{!!URL::route('leaves')!!}" class="btn btn-info" role="button">Cancel</a>
                         {!! Form::submit('Add', array('class' => 'btn btn-primary')) !!}
                     </div>
-
                     {!! Form::close() !!}
                 </div>
             </div>
         </div>
     </div>
-    <script type="text/javascript">
+    <script>
         $( function() {
             $( "#nameAuto" ).autocomplete({
                 minLength: 2,

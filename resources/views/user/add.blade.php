@@ -30,9 +30,19 @@
                     <div class="form-group">
                         {!! Form::label('role_id', 'User role') !!}
                         <select class="form-control input-sm" required name="role_id" id="role_id">
-                            <option disabled selected hidden>Select User Role</option>
+                            <option value="">Select User Role</option>
                             @foreach($roles as $role)
-                                <option value="{{$role->id}}">{{$role->description}}</option>
+                                <option value="{{ $role->id }}">{{ $role->description }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        {!! Form::label('company_id', 'Company Name') !!}
+                        <select class="form-control input-sm" required name="company_id" id="company_id">
+                            <option value="">Select Company Name</option>
+                            @foreach($companies as $company)
+                                <option value="{{ $company->id }}">{{ $company->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -46,7 +56,12 @@
                         {!! Form::label('password', 'Password') !!}
                         {!! Form::password('password', array('class' => 'form-control input-sm', 'required')) !!}
                     </div>
-                    <a href="{!!URL::route('users')!!}" class="btn btn-info" role="button">Cancel</a>
+
+                    @auth()
+                        <a href="{!!URL::route('users')!!}" class="btn btn-info" role="button">Cancel</a>
+                    @else
+                        <a href="{!!URL::previous()!!}" class="btn btn-info" role="button">Back</a>
+                    @endif
                     {!! Form::submit('Create', array('class' => 'btn btn-primary')) !!}
                     {!! Form::close() !!}
                 </div>

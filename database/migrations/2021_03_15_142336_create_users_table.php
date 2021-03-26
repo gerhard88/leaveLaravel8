@@ -53,11 +53,13 @@ class CreateUsersTable extends Migration
                 $table->enum('settings', ['Y', 'N'])->default('N');
                 $table->enum('reportView', ['Y', 'N'])->default('N');
                 $table->unsignedBigInteger('role_id');
+                $table->unsignedBigInteger('company_id');
                 $table->rememberToken();
                 $table->timestamps();
             });
             Schema::table('users', function ($table) {
-               $table->foreign('role_id')->references('id')->on('roles');
+                $table->foreign('role_id')->references('id')->on('roles');
+                $table->foreign('company_id')->references('id')->on('companies');
             });
         }
     }

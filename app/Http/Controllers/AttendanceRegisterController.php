@@ -8,7 +8,9 @@ use App\Models\Employee;
 use App\Models\EmployeeType;
 use App\Models\LeaveCalculation;
 use App\Models\LeaveType;
+use App\Models\Role;
 use App\Models\Team;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -33,14 +35,17 @@ class AttendanceRegisterController extends Controller
      */
     public function search()
     {
-        $employee = Employee::where('name', '=', Auth::user()->name)
+        $user = User::where('name', '=', Auth::user()->name)
             ->where('surname', '=', Auth::user()->surname)->first();
-        if ($employee) {
-            $departments = Department::where('company_id', '=', $employee->company_id)->get();
-            $teams = Team::where('company_id', '=', $employee->company_id)->get();
-        } else {
+
+        $role = Role::where('description', 'like', '%' . 'uper' . '%')->first();
+
+        if ($role->id == $user->role_id) {
             $departments = Department::all();
             $teams = Team::all();
+        } else {
+            $departments = Department::where('company_id', '=', $user->company_id)->get();
+            $teams = Team::where('company_id', '=', $user->company_id)->get();
         }
         $employeeTypes = EmployeeType::all();
         return view('attendanceRegister.search', compact('departments', 'teams', 'employeeTypes'));
@@ -53,8 +58,10 @@ class AttendanceRegisterController extends Controller
      */
     public function add(Request $request)
     {
-        $employee = Employee::where('name', '=', Auth::user()->name)
+        $user = User::where('name', '=', Auth::user()->name)
             ->where('surname', '=', Auth::user()->surname)->first();
+
+        $role = Role::where('description', 'like', '%' . 'uper' . '%')->first();
 
         $pieces = array_filter( explode("&",$_SERVER['QUERY_STRING'] ));
         $params = array();
@@ -80,10 +87,10 @@ class AttendanceRegisterController extends Controller
                 $employeesQuery = $employeesQuery->wherein('team_id',$params["team_id"]);
             }
         }
-        if ($employee)
-            $employees = $employeesQuery->where('company_id', '=', $employee->company_id)->get();
-        else
+        if ($role->id == $user->role_id)
             $employees = $employeesQuery->get();
+        else
+            $employees = $employeesQuery->where('company_id', '=', $user->company_id)->get();
 
         $dates = $request->start_date;
 
@@ -323,10 +330,8 @@ class AttendanceRegisterController extends Controller
             }
         }
         if ($endDate > $request->input('day7') && $request->input('day7') != null) {
-            $attendanceRegister = AttendanceRegister::where('dayOfWeek', '=', $request->input('day7'))->first();
-            $day7 = $attendanceRegister->dayOfWeek;
-            $type = $attendanceRegister->employeeType_id;
-            return Redirect::route('paginateRight', ['type' => $type, 'day7' => $day7]);
+            $day7 = $request->input('day7');
+            return Redirect::route('paginateRight', ['employees' => $employees, 'day7' => $day7]);
         } else
             return Redirect::route('annualLeave')->with('success', 'Successfully captured employees" register!');
     }
@@ -396,12 +401,15 @@ class AttendanceRegisterController extends Controller
             }
         }
         if ($empType) {
-            $calculated_leave = $grandTotalDays / 17;
+            $annual_leave = $grandTotalDays / 17;
+            $sick_leave = $grandTotalDays / 26;
+
         } else {
             $grandTotalDays = $grandTotalHours / 8;
-            $calculated_leave = $grandTotalDays / 17;
+            $annual_leave = $grandTotalDays / 17;
+            $sick_leave = $grandTotalDays / 26;
         }
-        //store Leave Calculation table
+        //store Annual Leave on Leave Calculation table
         $type = LeaveType::where('type', 'like', '%' . 'nnua' . '%')->first();
         $leaveCalcEmployee = LeaveCalculation::where('leaveType_id', '=', $type->id)
             ->where('employee_id', '=', $employee->id)->first();
@@ -409,7 +417,24 @@ class AttendanceRegisterController extends Controller
         $leaveCalculation = new LeaveCalculation();
 
         $leaveCalculation->work_daysPerWeek = $leaveCalcEmployee->work_daysPerWeek;
-        $leaveCalculation->leaveDays_accumulated = $calculated_leave;
+        $leaveCalculation->leaveDays_accumulated = $annual_leave;
+        $leaveCalculation->leaveDays_taken = $leaveCalcEmployee->leaveDays_taken;
+        $leaveCalculation->leaveType_id = $type->id;
+        $leaveCalculation->employee_id = $employee->id;
+        if ($leaveCalcEmployee)
+            $leaveCalcEmployee->delete();
+        $leaveCalculation->save();
+
+        //store Sick Leave on Leave Calculation table
+        $type = LeaveType::where('type', 'like', '%' . 'ick' . '%')->first();
+        $leaveCalcEmployee = null;
+        $leaveCalcEmployee = LeaveCalculation::where('leaveType_id', '=', $type->id)
+            ->where('employee_id', '=', $employee->id)->first();
+
+        $leaveCalculation = new LeaveCalculation();
+
+        $leaveCalculation->work_daysPerWeek = $leaveCalcEmployee->work_daysPerWeek;
+        $leaveCalculation->leaveDays_accumulated = $sick_leave;
         $leaveCalculation->leaveDays_taken = $leaveCalcEmployee->leaveDays_taken;
         $leaveCalculation->leaveType_id = $type->id;
         $leaveCalculation->employee_id = $employee->id;
@@ -419,13 +444,14 @@ class AttendanceRegisterController extends Controller
     }
     public function paginateRight(Request $request)
     {
-        $employees = Employee::where('employeeType_id', '=', $request->type)->get();
+        $employees = $request->employees;
         $paginateRight = 'Yes';
 
         $employeesRegisterArray = array();
-        foreach ($employees as $employee)
+        foreach ($employees as $emp)
         {
             $employeeRegister = new EmployeesRegister();
+            $employee = Employee::find($emp);
             $employeeRegister->id = $employee->id;
             $employeeRegister->employeeNo = $employee->employee_no;
             $employeeRegister->surname = $employee->surname;

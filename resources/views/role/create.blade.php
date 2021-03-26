@@ -222,7 +222,11 @@
                             </div>
                         </div>
                     </div>
-                    <a href="{!!URL::route('roles')!!}" class="btn btn-info" role="button">Cancel</a>
+                    @auth()
+                        <a href="{!!URL::route('roles')!!}" class="btn btn-info" role="button">Cancel</a>
+                    @else
+                        <a href="{!!URL::previous()!!}" class="btn btn-info" role="button">Back</a>
+                    @endif
                     {!! Form::submit('Add', array('class' => 'btn btn-primary')) !!}
                     {!! Form::close() !!}
                 </div>

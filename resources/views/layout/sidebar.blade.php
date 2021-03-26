@@ -35,20 +35,32 @@
                                     @if(Auth::user()->createRole == 'Y')
                                         <li><a href="{!! URL::route('roles') !!}">User Roles</a></li>
                                     @endif
-                                    @if(Auth::user()->addUser == 'Y')
-                                        <li><a href="{!! URL::route('users') !!}">Users</a></li>
-                                    @endif
                                     @if(Auth::user()->addCountry == 'Y')
                                         <li><a href="{!! URL::route('countries') !!}">Countries</a></li>
                                     @endif
                                     @if(Auth::user()->addCompany == 'Y')
-                                        <li><a href="{!! URL::route('companies') !!}">Companies</a></li>
+                                        @if(Auth::user()->updateCompany == 'Y')
+                                            <li><a href="{!! URL::route('companies') !!}">Companies</a></li>
+                                        @else
+                                            <li><a href="{!! URL::route('addCompany') !!}">Add Company</a></li>
+                                        @endif
+                                    @endif
+                                    @if(Auth::user()->addUser == 'Y')
+                                        <li><a href="{!! URL::route('users') !!}">Users</a></li>
                                     @endif
                                     @if(Auth::user()->addDept == 'Y')
-                                        <li><a href="{!!URL::route('departments')!!}">Departments</a></li>
+                                        @if(Auth::user()->updateDept == 'Y')
+                                            <li><a href="{!! URL::route('departments') !!}">Departments</a></li>
+                                        @else
+                                            <li><a href="{!! URL::route('addDepartment') !!}">Add Department</a></li>
+                                        @endif
                                     @endif
                                     @if(Auth::user()->addTeam == 'Y')
-                                        <li><a href="{!!URL::route('teams')!!}">Teams</a></li>
+                                        @if(Auth::user()->updateTeam == 'Y')
+                                            <li><a href="{!! URL::route('teams') !!}">Teams</a></li>
+                                        @else
+                                            <li><a href="{!! URL::route('addTeam') !!}">Add Team</a></li>
+                                        @endif
                                     @endif
                                     @if(Auth::user()->addEmployeeType == 'Y')
                                         <li><a href="{!!URL::route('employeeTypes')!!}">Employee Types</a></li>
@@ -65,6 +77,7 @@
                         <div id="reports" class="collapse in">
                             <li><a href="{!!URL::route('annualLeave')!!}">Annual Leave Balances</a></li>
                             <li><a href="{!!URL::route('sickLeave')!!}">Sick Leave Balances</a></li>
+                            <li><a href="{!! URL::route('leaveRequests') !!}">Leave Requests</a></li>
                         </div>
                     @endif
                     <span class="label label-primary col-xs-12 col-sm-12 col-md-12" style="cursor: pointer;" data-toggle="collapse" data-target="#helpSupport">Help & Support</span>

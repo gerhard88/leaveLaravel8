@@ -25,7 +25,7 @@
                     @if (count($annualLeaveBalances) > 0)
 
                         <!-- Table Headings -->
-                            <thead>
+                        <thead>
                             <th>Employee No</th>
                             <th>Surname</th>
                             <th>Name</th>
@@ -33,10 +33,10 @@
                             <th>Accumulated Leave Days</th>
                             <th>Days Taken</th>
                             <th>Days Remaining</th>
-                            </thead>
+                        </thead>
 
-                            <!-- Table Body -->
-                            <tbody>
+                        <!-- Table Body -->
+                        <tbody>
                             @foreach ($annualLeaveBalances as $employee)
                                 <tr>
                                     <!-- Employee No -->
@@ -69,13 +69,23 @@
                                     </td>
                                 </tr>
                             @endforeach
-                            </tbody>
-                        @else
-                            <div class="alert alert-info" role="alert">No sick leave balances are available</div>
-                        @endif
+                        </tbody>
+                    @else
+                        <div class="alert alert-info" role="alert">No sick leave balances are available</div>
+                    @endif
                     </table>
                 </div>
             </div>
         </div>
     </div>
+    <script>
+        $(document).ready(function() {
+            $('#dataTable').DataTable( {
+                dom: 'Bfrtip',
+                buttons: [
+                    'print', 'excel',
+                ],
+            });
+        });
+    </script>
 @endsection

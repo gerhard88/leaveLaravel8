@@ -107,8 +107,10 @@
                                                 <button type="submit" class="btn btn-warning"><i class="fa fa-trash"></i> Edit </button>
                                                 <a href="{!!URL::route('destroyCompany', ['id' => $company->id])!!}" class="btn btn-danger"
                                                    onclick="return confirm('Are you sure about deleting the company?')">Delete</a>
-                                                <a href="{!!URL::route('deptsCompany', ['id' => $company->id])!!}" class="btn btn-info">Departments</a>
-                                                <a href="{!!URL::route('teamsCompany', ['id' => $company->id])!!}" class="btn btn-info">Teams</a>
+                                                @auth()
+                                                    <a href="{!!URL::route('deptsCompany', ['id' => $company->id])!!}" class="btn btn-info">Departments</a>
+                                                    <a href="{!!URL::route('teamsCompany', ['id' => $company->id])!!}" class="btn btn-info">Teams</a>
+                                                @endauth
                                                 {!! Form::close() !!}
                                             </div>
                                         </td>

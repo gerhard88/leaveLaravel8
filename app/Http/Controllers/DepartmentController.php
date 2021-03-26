@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Company;
 use App\Models\Department;
 use App\Models\Employee;
+use App\Models\Role;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -27,13 +29,16 @@ class DepartmentController extends Controller
      */
     public function index()
     {
-        $employee = Employee::where('name', '=', Auth::user()->name)
+        $user = User::where('name', '=', Auth::user()->name)
             ->where('surname', '=', Auth::user()->surname)->first();
 
-        if ($employee)
-            $departments = Department::where('company_id', '=', $employee->company_id)->get();
-        else
+        $role = Role::where('description', 'like', '%' . 'uper' . '%')->first();
+
+        if ($role->id == $user->role_id)
             $departments = DB::table('departments')->get();
+        else
+            $departments = Department::where('company_id', '=', $user->company_id)->get();
+
         return view('department.index', ['departments' => $departments]);
     }
     /**
@@ -43,13 +48,16 @@ class DepartmentController extends Controller
      */
     public function add()
     {
-        $employee = Employee::where('name', '=', Auth::user()->name)
+        $user = User::where('name', '=', Auth::user()->name)
             ->where('surname', '=', Auth::user()->surname)->first();
 
-        if ($employee)
-            $companies = Company::where('id', '=', $employee->company_id)->get();
-        else
+        $role = Role::where('description', 'like', '%' . 'uper' . '%')->first();
+
+        if ($role->id == $user->role_id)
             $companies = Company::all();
+        else
+            $companies = Company::where('id', '=', $user->company_id)->get();
+
         return view('department.add', compact('companies', $companies));
     }
     /**
