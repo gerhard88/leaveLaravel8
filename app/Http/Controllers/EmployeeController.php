@@ -13,6 +13,7 @@ use App\Models\LeaveType;
 use App\Models\Role;
 use App\Models\Team;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -400,8 +401,10 @@ class EmployeeController extends Controller
         }
         $idN = $request->idNo;
         $dob = $request->dob;
-        if (substr($idN, 0, 2) != substr($dob, 2, 2) or substr($idN, 2, 2) != substr($dob, 5, 2) or substr($idN, 4, 2) != substr($dob, 8, 2))
-            return Redirect::route('editEmployee', [$id])->withInput()->with('warning', 'First 6 characters of ID no & date of birth are not equal');
+        if ($request->idType == 'RSA ID') {
+            if (substr($idN, 0, 2) != substr($dob, 2, 2) or substr($idN, 2, 2) != substr($dob, 5, 2) or substr($idN, 4, 2) != substr($dob, 8, 2))
+                return Redirect::route('editEmployee', [$id])->withInput()->with('warning', 'First 6 characters of ID no & date of birth are not equal');
+        }
 
         $employee->employee_no = $request->employee_no;
         $employee->name = $request->name;
