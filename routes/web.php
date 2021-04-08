@@ -267,9 +267,6 @@ Route::get('paginateLeft', [AttendanceRegisterController::class, 'paginateLeft']
 // route to paginate to the right
 Route::get('paginateRight', [AttendanceRegisterController::class, 'paginateRight'])->name('paginateRight');
 
-//route to display calendar view
-//Route::get('calendar', [DashboardController::class, 'view'])->name('calendar');
-
 // get the ajaxfunction for employee names
 Route::get('getNameData', [EmployeeController::class, 'getNameData']);
 
@@ -277,13 +274,40 @@ Route::get('calendar', [FullCalendarController::class, 'index'])->name('calendar
 
 // route to secure routes
 Route::group(['middleware' => ['myMiddleware']], function () {
-    Route::get('employees', [EmployeeController::class, 'index'])->name('employees');
-    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('roles', [RoleController::class, 'index'])->name('roles');
+    Route::get('role/create', [RoleController::class, 'create'])->name('create');
+    Route::get('role/edit/{id}', [RoleController::class, 'edit'])->name('edit');
+    Route::get('countries', [CountryController::class, 'index'])->name('countries');
+    Route::get('country/add', [CountryController::class, 'add'])->name('addCountry');
+    Route::get('country/edit/{id}', [CountryController::class, 'edit'])->name('editCountry');
+    Route::get('companies', [CompanyController::class, 'index'])->name('companies');
+    Route::get('company/add', [CompanyController::class, 'add'])->name('addCompany');
+    Route::get('company/edit/{id}', [CompanyController::class, 'edit'])->name('editCompany');
+    Route::get('users', [UserController::class, 'index'])->name('users');
+    Route::get('user/add', [UserController::class, 'add'])->name('addUser');
+    Route::get('user/edit/{id}', [UserController::class, 'edit'])->name('editUser');
+    Route::get('employeeTypes', [EmployeeTypeController::class, 'index'])->name('employeeTypes');
+    Route::get('employeeType/add', [EmployeeTypeController::class, 'add'])->name('addEmployeeType');
+    Route::get('employeeType/edit/{id}', [EmployeeTypeController::class, 'edit'])->name('editEmployeeType');
+    Route::get('leaveTypes', [LeaveTypeController::class, 'index'])->name('leaveTypes');
+    Route::get('leaveType/add', [LeaveTypeController::class, 'add'])->name('addLeaveType');
+    Route::get('leaveType/edit/{id}', [LeaveTypeController::class, 'edit'])->name('editLeaveType');
     Route::get('departments', [DepartmentController::class, 'index'])->name('departments');
+    Route::get('department/add', [DepartmentController::class, 'add'])->name('addDepartment');
+    Route::get('department/edit/{id}', [DepartmentController::class, 'edit'])->name('editDepartment');
     Route::get('teams', [TeamController::class, 'index'])->name('teams');
+    Route::get('team/add', [TeamController::class, 'add'])->name('addTeam');
+    Route::get('team/edit/{id}', [TeamController::class, 'edit'])->name('editTeam');
+    Route::get('employees', [EmployeeController::class, 'index'])->name('employees');
+    Route::get('employee/add', [EmployeeController::class, 'add'])->name('addEmployee');
+    Route::get('employee/edit/{id}', [EmployeeController::class, 'edit'])->name('editEmployee');
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('leaves', [LeaveController::class, 'index'])->name('leaves');
+    Route::get('leave/add', [LeaveController::class, 'add'])->name('addLeave');
     Route::get('reports/annualLeave', [ReportController::class, 'annualLeave'])->name('annualLeave');
     Route::get('reports/sickLeave', [ReportController::class, 'sickLeave'])->name('sickLeave');
     Route::get('attendanceRegister/add', [AttendanceRegisterController::class, 'add'])->name('addAttRegister');
+    Route::get('settings', [ReportController::class, 'settings'])->name('settings');
+    Route::get('calendar', [FullCalendarController::class, 'index'])->name('calendar');
 });
 

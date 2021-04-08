@@ -751,15 +751,15 @@ class RoleController extends Controller
             $users = User::where('role_id', '=', $role->id)->get();
             foreach ($users as $user)
             {
-                $user->createRole = 'N'; $user->updateRole = 'N'; $user->DeleteRole = 'N';
-                $user->addUser = 'N'; $user->updateUser = 'N'; $user->DeleteUser = 'N';
-                $user->addCountry = 'N'; $user->updateCountry = 'N'; $user->DeleteCountry = 'N';
-                $user->addCompany = 'N'; $user->updateCompany = 'N'; $user->DeleteCompany = 'N';
-                $user->addDept = 'N'; $user->updateDept = 'N'; $user->DeleteDept = 'N';
-                $user->addTeam = 'N'; $user->updateTeam = 'N'; $user->DeleteTeam = 'N';
-                $user->addEmployeeType = 'N'; $user->updateEmployeeType = 'N'; $user->DeleteEmployeeType = 'N';
-                $user->addLeaveType = 'N'; $user->updateLeaveType = 'N'; $user->DeleteLeaveType = 'N';
-                $user->addEmployee = 'N'; $user->updateEmployee = 'N'; $user->DeleteEmployee = 'N';
+                $user->createRole = 'N'; $user->updateRole = 'N'; $user->deleteRole = 'N';
+                $user->addUser = 'N'; $user->updateUser = 'N'; $user->deleteUser = 'N';
+                $user->addCountry = 'N'; $user->updateCountry = 'N'; $user->deleteCountry = 'N';
+                $user->addCompany = 'N'; $user->updateCompany = 'N'; $user->deleteCompany = 'N';
+                $user->addDept = 'N'; $user->updateDept = 'N'; $user->deleteDept = 'N';
+                $user->addTeam = 'N'; $user->updateTeam = 'N'; $user->deleteTeam = 'N';
+                $user->addEmployeeType = 'N'; $user->updateEmployeeType = 'N'; $user->deleteEmployeeType = 'N';
+                $user->addLeaveType = 'N'; $user->updateLeaveType = 'N'; $user->deleteLeaveType = 'N';
+                $user->addEmployee = 'N'; $user->updateEmployee = 'N'; $user->deleteEmployee = 'N';
                 $user->attReg = 'N'; $user->leaveCapture = 'N'; $user->leaveApprove = 'N';
                 $user->settings = 'N'; $user->reportView = 'N';
 
