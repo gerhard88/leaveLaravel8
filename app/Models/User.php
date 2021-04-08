@@ -39,4 +39,18 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * The attributes excluded from the model's JSON form.
+     *
+     * @var array
+     */
+    public static function all($columns = ['*'])
+    {//override function to order by name
+        $columns = is_array($columns) ? $columns : func_get_args();
+
+        $instance = new static;
+
+        return $instance->newQuery()->orderBy('name')->get($columns);
+    }
 }

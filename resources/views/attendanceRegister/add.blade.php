@@ -40,23 +40,37 @@
                     @if (count($employeesRegisterArray) > 0)
 
                         <!-- Table Headings -->
-                            <thead>
+                        <thead>
                             <th><input type="checkbox" id="selectAll"></th>
                             <th>Employee No</th>
                             <th>Employee Surname</th>
                             <th>Employee Name</th>
                             <th>Type of worker</th>
-                            <th><strong>{{ $day1 }}</strong></th>
-                            <th><strong>{{ $day2 }}</strong></th>
-                            <th><strong>{{ $day3 }}</strong></th>
-                            <th><strong>{{ $day4 }}</strong></th>
-                            <th><strong>{{ $day5 }}</strong></th>
-                            <th><strong>{{ $day6 }}</strong></th>
-                            <th><strong>{{ $day7 }}</strong></th>
-                            </thead>
+                            @if($day1 != null)
+                                <th><strong>{{ date('D d-m-Y', strtotime($day1)) }}</strong></th>
+                            @endif
+                            @if($day2 != null)
+                                <th><strong>{{ date('D d-m-Y', strtotime($day2)) }}</strong></th>
+                            @endif
+                            @if($day3 != null)
+                                <th><strong>{{ date('D d-m-Y', strtotime($day3)) }}</strong></th>
+                            @endif
+                            @if($day4 != null)
+                                <th><strong>{{ date('D d-m-Y', strtotime($day4)) }}</strong></th>
+                            @endif
+                            @if($day5 != null)
+                                <th><strong>{{ date('D d-m-Y', strtotime($day5)) }}</strong></th>
+                            @endif
+                            @if($day6 != null)
+                                <th><strong>{{ date('D d-m-Y', strtotime($day6)) }}</strong></th>
+                            @endif
+                            @if($day7 != null)
+                                <th><strong>{{ date('D d-m-Y', strtotime($day7)) }}</strong></th>
+                            @endif
+                        </thead>
 
-                            <!-- Table Body -->
-                            <tbody>
+                        <!-- Table Body -->
+                        <tbody>
                             @foreach ($employeesRegisterArray as $employee)
 
                                 <tr>
@@ -141,10 +155,10 @@
                             {{ Form::hidden('day6', $day6) }}
                             {{ Form::hidden('day7', $day7) }}
                             <input type="hidden" id="empType" value="{{ $type }}">
-                            </tbody>
-                        @else
-                            <div class="alert alert-info" role="alert">No employees are available</div>
-                        @endif
+                        </tbody>
+                    @else
+                        <div class="alert alert-info" role="alert">No employees are available</div>
+                    @endif
                     </table>
                     <a href="{!!URL::route('searchAttRegister')!!}" class="btn btn-info" role="button">Cancel</a>
                     {!! Form::submit('Add', array('class' => 'btn btn-primary')) !!}

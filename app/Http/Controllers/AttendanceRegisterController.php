@@ -70,7 +70,8 @@ class AttendanceRegisterController extends Controller
             list($name, $value) = explode('=', $param, 2);
             $params[urldecode($name)][] = urldecode($value);
         }
-        $employeesQuery = Employee::where('id', '>', 0);
+        $employeesQuery = Employee::where('id', '>', 0)
+            ->where('employee_status', '=', 'A');
 
         if (array_key_exists("employeeType_id",$params))
         {
@@ -446,58 +447,9 @@ class AttendanceRegisterController extends Controller
     {
         $employees = $request->employees;
         $paginateRight = 'Yes';
-
-        $employeesRegisterArray = array();
-        foreach ($employees as $emp)
-        {
-            $employeeRegister = new EmployeesRegister();
-            $employee = Employee::find($emp);
-            $employeeRegister->id = $employee->id;
-            $employeeRegister->employeeNo = $employee->employee_no;
-            $employeeRegister->surname = $employee->surname;
-            $employeeRegister->name = $employee->name;
-            $employeeType = EmployeeType::find($employee->employeeType_id);
-            $employeeRegister->employeeType = $employeeType->employee_type;
-            $attendanceRegister = AttendanceRegister::where('dayOfWeek', '>', $request->day7)
-                ->where('employeeType_id', '=', $request->type)
-                ->where('employee_id', '=', $employee->id)->get();
-            if ($attendanceRegister) {
-                $cnt = 1;
-                foreach ($attendanceRegister as $register)
-                {
-                    if ($cnt == 1)
-                        $employeeRegister->day1Reg = $register->register;
-                    if ($cnt == 2)
-                        $employeeRegister->day2Reg = $register->register;
-                    if ($cnt == 3)
-                        $employeeRegister->day3Reg = $register->register;
-                    if ($cnt == 4)
-                        $employeeRegister->day4Reg = $register->register;
-                    if ($cnt == 5)
-                        $employeeRegister->day5Reg = $register->register;
-                    if ($cnt == 6)
-                        $employeeRegister->day6Reg = $register->register;
-                    if ($cnt == 7) {
-                        $employeeRegister->day7Reg = $register->register;
-                        break;
-                    }
-                    $cnt = $cnt + 1;
-                }
-            } else {
-                $employeeRegister->day1Reg = null;
-                $employeeRegister->day2Reg = null;
-                $employeeRegister->day3Reg = null;
-                $employeeRegister->day4Reg = null;
-                $employeeRegister->day5Reg = null;
-                $employeeRegister->day6Reg = null;
-                $employeeRegister->day7Reg = null;
-            }
-            array_push($employeesRegisterArray, $employeeRegister);
-        }
         $pageDate = Carbon::now();
         $endDate = $pageDate->format('Y-m-d');
         $day7 = $request->day7;
-        $type = $employeeType->employee_type;
 
         while ($request->day7 < $endDate && $day7 == $request->day7)
         {
@@ -540,6 +492,82 @@ class AttendanceRegisterController extends Controller
             } else
                 $day7 = null;
         }
+
+        $employeesRegisterArray = array();
+        foreach ($employees as $emp)
+        {
+            $employeeRegister = new EmployeesRegister();
+            $employee = Employee::find($emp);
+            $employeeRegister->id = $employee->id;
+            $employeeRegister->employeeNo = $employee->employee_no;
+            $employeeRegister->surname = $employee->surname;
+            $employeeRegister->name = $employee->name;
+            $employeeType = EmployeeType::find($employee->employeeType_id);
+            $employeeRegister->employeeType = $employeeType->employee_type;
+            $attendanceRegister = AttendanceRegister::where('dayOfWeek', '>', $request->day7)
+                ->where('employeeType_id', '=', $employeeType->id)
+                ->where('employee_id', '=', $employee->id)->get();
+            if ($attendanceRegister) {
+                $cnt = 1;
+                foreach ($attendanceRegister as $register)
+                {
+                    if ($cnt == 1) {
+                        if ($day1 == $register->dayOfWeek)
+                            $employeeRegister->day1Reg = $register->register;
+                        else
+                            $employeeRegister->day1Reg = null;
+                    }
+                    if ($cnt == 2) {
+                        if ($day2 == $register->dayOfWeek)
+                            $employeeRegister->day2Reg = $register->register;
+                        else
+                            $employeeRegister->day2Reg = null;
+                    }
+                    if ($cnt == 3) {
+                        if ($day3 == $register->dayOfWeek)
+                            $employeeRegister->day3Reg = $register->register;
+                        else
+                            $employeeRegister->day3Reg = null;
+                    }
+                    if ($cnt == 4) {
+                        if ($day4 == $register->dayOfWeek)
+                            $employeeRegister->day4Reg = $register->register;
+                        else
+                            $employeeRegister->day4Reg = null;
+                    }
+                    if ($cnt == 5) {
+                        if ($day5 == $register->dayOfWeek)
+                            $employeeRegister->day5Reg = $register->register;
+                        else
+                            $employeeRegister->day5Reg = null;
+                    }
+                    if ($cnt == 6) {
+                        if ($day6 == $register->dayOfWeek)
+                            $employeeRegister->day6Reg = $register->register;
+                        else
+                            $employeeRegister->day6Reg = null;
+                    }
+                    if ($cnt == 7) {
+                        if ($day7 == $register->dayOfWeek)
+                            $employeeRegister->day7Reg = $register->register;
+                        else
+                            $employeeRegister->day7Reg = null;
+                        break;
+                    }
+                    $cnt = $cnt + 1;
+                }
+            } else {
+                $employeeRegister->day1Reg = null;
+                $employeeRegister->day2Reg = null;
+                $employeeRegister->day3Reg = null;
+                $employeeRegister->day4Reg = null;
+                $employeeRegister->day5Reg = null;
+                $employeeRegister->day6Reg = null;
+                $employeeRegister->day7Reg = null;
+            }
+            array_push($employeesRegisterArray, $employeeRegister);
+        }
+        $type = $employeeType->employee_type;
         if ($day1 == $endDate or $day2 == $endDate or $day3 == $endDate or $day4 == $endDate or $day5 == $endDate or
             $day6 == $endDate or $day7 == $endDate)
             $paginateRight = 'No';

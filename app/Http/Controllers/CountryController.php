@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Company;
 use App\Models\Country;
+use App\Models\Role;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 
@@ -130,8 +133,17 @@ class CountryController extends Controller
      */
     public function ajaxCompanies($country_id)
     {
-        //only show all companies to a country
-        $companies = Company::where('country_id','=',$country_id)->get();
+        // Get log in user credentials to select only the company user is working for
+        $user = User::where('name', '=', Auth::user()->name)
+            ->where('surname', '=', Auth::user()->surname)->first();
+
+        $role = Role::where('description', 'like', '%' . 'uper' . '%')->first();
+
+        if ($role->id == $user->role_id)
+            $companies = Company::where('country_id', '=', $country_id)->get();
+        else
+            $companies = Company::where('id', '=', $user->company_id)
+                ->where('country_id', '=', $country_id)->get();
         return $companies;
     }
 }
