@@ -18,12 +18,9 @@ class SecureRoutes
      */
     public function handle(Request $request, Closure $next)
     {
-        $user = Auth::user();
-        if ($user) {
-            $role = Role::find($user->role_id);
-            if ($role)
-                return $next($request);
+        if (Auth::guest()) {
+            return redirect()->guest('login');
         }
-        return redirect()->back();
+        return $next($request);
     }
 }

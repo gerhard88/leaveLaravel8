@@ -315,18 +315,6 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="col-sm-2 col-md-2">
-                            <div class="form-group">
-                                <label>
-                                    @if ($covid === 'on')
-                                        <input type="checkbox" name="covid" checked="">
-                                    @else
-                                        <input type="checkbox" name="covid" {{ old('covid') ? 'checked' : '' }} >
-                                    @endif
-                                    Covid Leave
-                                </label>
-                            </div>
-                        </div>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12">
                         <a href="{!!URL::route('employees')!!}" class="btn btn-info" role="button">Cancel</a>

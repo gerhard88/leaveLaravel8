@@ -151,7 +151,7 @@ class EmployeeController extends Controller
 
         if ($request->annual == null && $request->sick == null && $request->public == null && $request->study == null &&
             $request->family == null && $request->maternity == null && $request->commissioning == null &&
-            $request->unpaid == null && $request->adoption == null && $request->paternity == null && $request->covid == null)
+            $request->unpaid == null && $request->adoption == null && $request->paternity == null)
             return Redirect::route('addEmployee')->withInput()->with('warning', 'At least one leave type must be selected!');
 
         $input = $request->all();
@@ -235,13 +235,6 @@ class EmployeeController extends Controller
                 else
                     return Redirect::route('addEmployee')->withInput()->with('warning', 'Leave type paternity is not added in LeaveType table');
             }
-            if ($request->covid == 'on') {
-                $leaveType = LeaveType::where('type', 'like', '%' . 'ovid' . '%')->first();
-                if ($leaveType)
-                    $this->leaveCalculation($employeeId->id, $leaveType->id, $days);
-                else
-                    return Redirect::route('addEmployee')->withInput()->with('warning', 'Leave type covid is not added in LeaveType table');
-            }
             return Redirect::route('employees', ['id' => $employee->id])->with('success', 'Successfully added employee');
         } else
             return Redirect::route('addEmployee')->withInput()->withErrors($employee->errors());
@@ -304,7 +297,7 @@ class EmployeeController extends Controller
         $leaveCalculations = LeaveCalculation::where('employee_id', '=', $employee->id)->get();
 
         $annual = null; $sick = null; $public = null; $study = null; $family = null; $maternity = null;
-        $commissioning = null; $unpaid = null; $adoption = null; $paternity = null; $covid = null;
+        $commissioning = null; $unpaid = null; $adoption = null; $paternity = null;
         $work_daysPerWeek = null;
 
         foreach ($leaveCalculations as $calculation)
@@ -349,11 +342,6 @@ class EmployeeController extends Controller
                                                 $type = LeaveType::where('type', 'like', '%' . 'pate' . '%')->first();
                                                 if ($type->id == $calculation->leaveType_id)
                                                     $paternity = 'on';
-                                                else {
-                                                    $type = LeaveType::where('type', 'like', '%' . 'ovid' . '%')->first();
-                                                    if ($type->id == $calculation->leaveType_id)
-                                                        $covid = 'on';
-                                                }
                                             }
                                         }
                                     }
@@ -366,7 +354,7 @@ class EmployeeController extends Controller
         }
         return view('employee.edit', compact('employee', 'countries', 'companies', 'departments', 'teams', 'employeeTypes',
             'work_daysPerWeek', 'annual', 'sick', 'public', 'study', 'family', 'maternity', 'commissioning', 'unpaid',
-            'adoption', 'paternity', 'covid'));
+            'adoption', 'paternity'));
     }
     /**
      * Update the specified resource in storage.
@@ -435,7 +423,7 @@ class EmployeeController extends Controller
                         $leaveCalculation->delete();
                 } else {
                     if ($request->annual == 'on')
-                        $this->leaveCalculation($employee->id, $leaveType->id, $days);
+                        $this->updateLeaveCalculation($employee->id, $leaveType->id, $days);
                 }
             } else {
                 if ($request->annual == 'on')
@@ -451,7 +439,7 @@ class EmployeeController extends Controller
                         $leaveCalculation->delete();
                 } else {
                     if ($request->sick == 'on')
-                        $this->leaveCalculation($employee->id, $leaveType->id, $days);
+                        $this->updateLeaveCalculation($employee->id, $leaveType->id, $days);
                 }
             } else {
                 if ($request->sick == 'on')
@@ -468,7 +456,7 @@ class EmployeeController extends Controller
                         $leaveCalculation->delete();
                 } else {
                     if ($request->public == 'on')
-                        $this->leaveCalculation($employee->id, $leaveType->id, $days);
+                        $this->updateLeaveCalculation($employee->id, $leaveType->id, $days);
                 }
             } else {
                 if ($request->public == 'on')
@@ -484,7 +472,7 @@ class EmployeeController extends Controller
                         $leaveCalculation->delete();
                 } else {
                     if ($request->study == 'on')
-                        $this->leaveCalculation($employee->id, $leaveType->id, $days);
+                        $this->updateLeaveCalculation($employee->id, $leaveType->id, $days);
                 }
             } else {
                 if ($request->study == 'on')
@@ -500,7 +488,7 @@ class EmployeeController extends Controller
                         $leaveCalculation->delete();
                 } else {
                     if ($request->family == 'on')
-                        $this->leaveCalculation($employee->id, $leaveType->id, $days);
+                        $this->updateLeaveCalculation($employee->id, $leaveType->id, $days);
                 }
             } else {
                 if ($request->family == 'on')
@@ -516,7 +504,7 @@ class EmployeeController extends Controller
                         $leaveCalculation->delete();
                 } else {
                     if ($request->maternity == 'on')
-                        $this->leaveCalculation($employee->id, $leaveType->id, $days);
+                        $this->updateLeaveCalculation($employee->id, $leaveType->id, $days);
                 }
             } else {
                 if ($request->maternity == 'on')
@@ -532,7 +520,7 @@ class EmployeeController extends Controller
                         $leaveCalculation->delete();
                 } else {
                     if ($request->commissioning == 'on')
-                        $this->leaveCalculation($employee->id, $leaveType->id, $days);
+                        $this->updateLeaveCalculation($employee->id, $leaveType->id, $days);
                 }
             } else {
                 if ($request->commissioning == 'on')
@@ -548,7 +536,7 @@ class EmployeeController extends Controller
                         $leaveCalculation->delete();
                 } else {
                     if ($request->unpaid == 'on')
-                        $this->leaveCalculation($employee->id, $leaveType->id, $days);
+                        $this->updateLeaveCalculation($employee->id, $leaveType->id, $days);
                 }
             } else {
                 if ($request->unpaid == 'on')
@@ -564,7 +552,7 @@ class EmployeeController extends Controller
                         $leaveCalculation->delete();
                 } else {
                     if ($request->adoption == 'on')
-                        $this->leaveCalculation($employee->id, $leaveType->id, $days);
+                        $this->updateLeaveCalculation($employee->id, $leaveType->id, $days);
                 }
             } else {
                 if ($request->adoption == 'on')
@@ -580,32 +568,34 @@ class EmployeeController extends Controller
                         $leaveCalculation->delete();
                 } else {
                     if ($request->paternity == 'on')
-                        $this->leaveCalculation($employee->id, $leaveType->id, $days);
+                        $this->updateLeaveCalculation($employee->id, $leaveType->id, $days);
                 }
             } else {
                 if ($request->paternity == 'on')
                     return Redirect::route('editEmployee', [$id])->withInput()->with('warning',
                         'Leave type paternity is not added on LeaveType table');
             }
-            $leaveType = LeaveType::where('type', 'like', '%' . 'vid' . '%')->first();
-            if ($leaveType) {
-                $leaveCalculation = LeaveCalculation::where('leaveType_id', '=', $leaveType->id)
-                    ->where('employee_id', '=', $employee->id)->first();
-                if ($leaveCalculation) {
-                    if ($request->covid != 'on')
-                        $leaveCalculation->delete();
-                } else {
-                    if ($request->covid == 'on')
-                        $this->leaveCalculation($employee->id, $leaveType->id, $days);
-                }
-            } else {
-                if ($request->covid == 'on')
-                    return Redirect::route('editEmployee', [$id])->withInput()->with('warning',
-                        'Leave type covid is not added on LeaveType table');
-            }
             return Redirect::route('employees')->with('success', 'Successfully updated employee!');
         } else
             return Redirect::route('editEmployee', [$id])->withInput()->withErrors($employee->errors());
+    }
+    public function updateLeaveCalculation($id, $typeId, $days)
+    {
+        $leaveCalc = LeaveCalculation::where('leaveType_id', '=', $typeId)
+            ->where('employee_id', '=', $id)->first();
+
+        if ($leaveCalc) {
+            $leaveCalc->work_daysPerWeek = $days;
+            $leaveCalc->update();
+        } else {
+            $leaveCalculation = new LeaveCalculation();
+            $leaveCalculation->work_daysPerWeek = $days;
+            $leaveCalculation->leaveDays_accumulated = 0;
+            $leaveCalculation->leaveDays_taken = 0;
+            $leaveCalculation->leaveType_id = $typeId;
+            $leaveCalculation->employee_id = $id;
+            $leaveCalculation->save();
+        }
     }
 
     /**

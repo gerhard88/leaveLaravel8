@@ -231,12 +231,6 @@
                                 <label for="adoption"> Adoption Leave</label><br>
                             </div>
                         </div>
-                        <div class="col-sm-2 col-md-2">
-                            <div class="form-group">
-                                <input type="checkbox" id="covid" name="covid">
-                                <label for="covid"> Covid Leave</label><br>
-                            </div>
-                        </div>
                     </div>
                     <a href="{!!URL::route('employees')!!}" class="btn btn-info" role="button">Cancel</a>
                     {!! Form::submit('Add', array('class' => 'btn btn-primary')) !!}
