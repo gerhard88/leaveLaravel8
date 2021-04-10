@@ -3,239 +3,299 @@
 @extends('layout/layout')
 
 @section('content')
-    <!-- Create User Role Form... -->
+<!-- Create User Role Form... -->
 
-    <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-12">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Add User Role</h3>
-                </div>
-                <div class="panel-body">
-                    <!-- if there are creation errors, they will show here -->
-                    {!! HTML::ul($errors->all()) !!}
-
-                    {!! Form::model(new App\Models\Role, ['route' => ['store']]) !!}
-
-                    <div class="form-group">
-                        {!! Form::label('description', 'Description') !!}
-                        {!! Form::text('description', Request::old('description'), array('class' => 'form-control', 'required')) !!}
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-12 col-md-12">
-                            <div class="form-group">
-                                <strong><p>User role functions: <input type="checkbox" id="selectAll"></p></strong>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-2 col-md-2">
-                            <div class="form-group">
-                                <input type="checkbox" id="createRole" name="createRole">
-                                <label for="createRole"> Create User Role</label><br>
-                            </div>
-                        </div>
-                        <div class="col-sm-2 col-md-2">
-                            <div class="form-group">
-                                <input type="checkbox" id="updateRole" name="updateRole">
-                                <label for="updateRole"> Update User Role</label><br>
-                            </div>
-                        </div>
-                        <div class="col-sm-2 col-md-2">
-                            <div class="form-group">
-                                <input type="checkbox" id="deleteRole" name="deleteRole">
-                                <label for="deleteRole"> Delete User Role</label><br>
-                            </div>
-                        </div>
-                        <div class="col-sm-2 col-md-2">
-                            <div class="form-group">
-                                <input type="checkbox" id="addUser" name="addUser">
-                                <label for="addUser"> Add User</label><br>
-                            </div>
-                        </div>
-                        <div class="col-sm-2 col-md-2">
-                            <div class="form-group">
-                                <input type="checkbox" id="updateUser" name="updateUser">
-                                <label for="updateUser"> Update User</label><br>
-                            </div>
-                        </div>
-                        <div class="col-sm-2 col-md-2">
-                            <div class="form-group">
-                                <input type="checkbox" id="deleteUser" name="deleteUser">
-                                <label for="deleteUser"> Delete User</label><br>
-                            </div>
-                        </div>
-                        <div class="col-sm-2 col-md-2">
-                            <div class="form-group">
-                                <input type="checkbox" id="addCountry" name="addCountry">
-                                <label for="addCountry"> Add Country</label><br>
-                            </div>
-                        </div>
-                        <div class="col-sm-2 col-md-2">
-                            <div class="form-group">
-                                <input type="checkbox" id="addCompany" name="addCompany">
-                                <label for="addCompany"> Add Company</label><br>
-                            </div>
-                        </div>
-                        <div class="col-sm-2 col-md-2">
-                            <div class="form-group">
-                                <input type="checkbox" id="addDept" name="addDept">
-                                <label for="addDept"> Add Department</label><br>
-                            </div>
-                        </div>
-                        <div class="col-sm-2 col-md-2">
-                            <div class="form-group">
-                                <input type="checkbox" id="addTeam" name="addTeam">
-                                <label for="addTeam"> Add Team</label><br>
-                            </div>
-                        </div>
-                        <div class="col-sm-2 col-md-2">
-                            <div class="form-group">
-                                <input type="checkbox" id="addEmployeeType" name="addEmployeeType">
-                                <label for="addEmployeeType"> Add Employee Type</label><br>
-                            </div>
-                        </div>
-                        <div class="col-sm-2 col-md-2">
-                            <div class="form-group">
-                                <input type="checkbox" id="addLeaveType" name="addLeaveType">
-                                <label for="addLeaveType"> Add Leave Type</label><br>
-                            </div>
-                        </div>
-                        <div class="col-sm-2 col-md-2">
-                            <div class="form-group">
-                                <input type="checkbox" id="updateCountry" name="updateCountry">
-                                <label for="updateCountry"> Update Country</label><br>
-                            </div>
-                        </div>
-                        <div class="col-sm-2 col-md-2">
-                            <div class="form-group">
-                                <input type="checkbox" id="updateCompany" name="updateCompany">
-                                <label for="updateCompany"> Update Company</label><br>
-                            </div>
-                        </div>
-                        <div class="col-sm-2 col-md-2">
-                            <div class="form-group">
-                                <input type="checkbox" id="updateDept" name="updateDept">
-                                <label for="updateDept"> Update Department</label><br>
-                            </div>
-                        </div>
-                        <div class="col-sm-2 col-md-2">
-                            <div class="form-group">
-                                <input type="checkbox" id="updateTeam" name="updateTeam">
-                                <label for="updateTeam"> Update Team</label><br>
-                            </div>
-                        </div>
-                        <div class="col-sm-2 col-md-2">
-                            <div class="form-group">
-                                <input type="checkbox" id="updateEmployeeType" name="updateEmployeeType">
-                                <label for="updateEmployeeType"> Update Employee Type</label><br>
-                            </div>
-                        </div>
-                        <div class="col-sm-2 col-md-2">
-                            <div class="form-group">
-                                <input type="checkbox" id="updateLeaveType" name="updateLeaveType">
-                                <label for="updateLeaveType"> Update Leave Type</label><br>
-                            </div>
-                        </div>
-                        <div class="col-sm-2 col-md-2">
-                            <div class="form-group">
-                                <input type="checkbox" id="deleteCountry" name="deleteCountry">
-                                <label for="deleteCountry"> Delete Country</label><br>
-                            </div>
-                        </div>
-                        <div class="col-sm-2 col-md-2">
-                            <div class="form-group">
-                                <input type="checkbox" id="deleteCompany" name="deleteCompany">
-                                <label for="deleteCompany"> Delete Company</label><br>
-                            </div>
-                        </div>
-                        <div class="col-sm-2 col-md-2">
-                            <div class="form-group">
-                                <input type="checkbox" id="deleteDept" name="deleteDept">
-                                <label for="deleteDept"> Delete Department</label><br>
-                            </div>
-                        </div>
-                        <div class="col-sm-2 col-md-2">
-                            <div class="form-group">
-                                <input type="checkbox" id="deleteTeam" name="deleteTeam">
-                                <label for="deleteTeam"> Delete Team</label><br>
-                            </div>
-                        </div>
-                        <div class="col-sm-2 col-md-2">
-                            <div class="form-group">
-                                <input type="checkbox" id="deleteEmployeeType" name="deleteEmployeeType">
-                                <label for="deleteEmployeeType"> Delete Employee Type</label><br>
-                            </div>
-                        </div>
-                        <div class="col-sm-2 col-md-2">
-                            <div class="form-group">
-                                <input type="checkbox" id="deleteLeaveType" name="deleteLeaveType">
-                                <label for="deleteLeaveType"> Delete Leave Type</label><br>
-                            </div>
-                        </div>
-                        <div class="col-sm-2 col-md-2">
-                            <div class="form-group">
-                                <input type="checkbox" id="addEmployee" name="addEmployee">
-                                <label for="addEmployee"> Add Employee</label><br>
-                            </div>
-                        </div>
-                        <div class="col-sm-2 col-md-2">
-                            <div class="form-group">
-                                <input type="checkbox" id="updateEmployee" name="updateEmployee">
-                                <label for="updateEmployee"> Update Employee</label><br>
-                            </div>
-                        </div>
-                        <div class="col-sm-2 col-md-2">
-                            <div class="form-group">
-                                <input type="checkbox" id="deleteEmployee" name="deleteEmployee">
-                                <label for="deleteEmployee"> Terminate Employee</label><br>
-                            </div>
-                        </div>
-                        <div class="col-sm-2 col-md-2">
-                            <div class="form-group">
-                                <input type="checkbox" id="attReg" name="attReg">
-                                <label for="attReg"> Attendance Register</label><br>
-                            </div>
-                        </div>
-                        <div class="col-sm-2 col-md-2">
-                            <div class="form-group">
-                                <input type="checkbox" id="leaveCreate" name="leaveCreate">
-                                <label for="leaveCreate"> Leave Application</label><br>
-                            </div>
-                        </div>
-                        <div class="col-sm-2 col-md-2">
-                            <div class="form-group">
-                                <input type="checkbox" id="leaveUpdate" name="leaveUpdate">
-                                <label for="leaveUpdate"> Leave Approval</label><br>
-                            </div>
-                        </div>
-                        <div class="col-sm-2 col-md-2">
-                            <div class="form-group">
-                                <input type="checkbox" id="settings" name="settings">
-                                <label for="settings"> Settings</label><br>
-                            </div>
-                        </div>
-                        <div class="col-sm-2 col-md-2">
-                            <div class="form-group">
-                                <input type="checkbox" id="reports" name="reports">
-                                <label for="reports"> View Reports</label><br>
-                            </div>
-                        </div>
-                    </div>
-                    @auth()
-                        <a href="{!!URL::route('roles')!!}" class="btn btn-info" role="button">Cancel</a>
-                    @else
-                        <a href="{!!URL::previous()!!}" class="btn btn-info" role="button">Back</a>
-                    @endif
-                    {!! Form::submit('Add', array('class' => 'btn btn-primary')) !!}
-                    {!! Form::close() !!}
-                </div>
+<div class="row my-6 mx-6">
+    <div class="col-md-12 grid-margin  stretch-card">
+        <div class="card">
+            <div class="container-fluid mt-2 w-100">
+                <h4 class="float-left mt-4 ml-2">Add User Role</h4>
             </div>
+
+
+            <div class="card-body">
+                <!-- if there are creation errors, they will show here -->
+                {!! HTML::ul($errors->all()) !!}
+
+                {!! Form::model(new App\Models\Role, ['route' => ['store']]) !!}
+
+                <!-- Row 1 Begin -->
+                <div class="row">
+                    <!--Name Col -->
+                    <div class="form-group col-md-4 ">
+                        <div class="form-group">
+                            {!! Form::label('description', 'Description') !!}
+                            {!! Form::text('description', Request::old('description'), array('class' => 'form-control',
+                            'autofocus',
+                            'required')) !!}
+                        </div>
+                    </div>
+                </div>
+                <!-- Row 1 End -->
+
+                <!-- Row 2 Begin -->
+                <div class="row">
+                    <!--Name Col -->
+                    <div class="form-group col-md-4 mb-n1">
+                        <div class="form-check ">
+                            <strong><label class="form-check-label d-inline p-2">
+                                    <input type="checkbox" id="selectAll">
+                                    Select All</strong>
+                            </label>
+                        </div>
+                    </div>
+                    <!-- Col -->
+                </div>
+                <!-- Row 2 End -->
+
+
+                <!-- Row 3 Begin -->
+                <div class="row">
+                    <div class="form-group col-md-4 ">
+                        <div class="form-check">
+                            <label class="form-check-label d-inline p-2" for="createRole">
+                                <input type="checkbox" class="form-check-input" id="createRole" name="createRole">
+                                Create User Role
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <label class="form-check-label d-inline p-2" for="addUser">
+                                <input type="checkbox" class="form-check-input" id="addUser" name="addUser">
+                                Add User
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <label class="form-check-label d-inline p-2" for="addCountry">
+                                <input type="checkbox" class="form-check-input" id="addCountry" name="addCountry">
+                                Add Country
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <label class="form-check-label d-inline p-2" for="addCompany">
+                                <input type="checkbox" class="form-check-input" id="addCompany" name="addCompany">
+                                Add Company
+                            </label>
+                        </div>
+
+
+                        <div class="form-check">
+                            <label class="form-check-label d-inline p-2" for="addDept">
+                                <input type="checkbox" class="form-check-input" id="addDept" name="addDept">
+                                Add Department
+                            </label>
+                        </div>
+
+
+                        <div class="form-check">
+                            <label class="form-check-label d-inline p-2" for="addTeam">
+                                <input type="checkbox" class="form-check-input" id="addTeam" name="addTeam">
+                                Add Team
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <label class="form-check-label d-inline p-2" for="addEmployeeType">
+                                <input type="checkbox" class="form-check-input" id="addEmployeeType"
+                                    name="addEmployeeType">
+                                Add Employee Type
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <label class="form-check-label d-inline p-2" for="addLeaveType">
+                                <input type="checkbox" class="form-check-input" id="addLeaveType" name="addLeaveType">
+                                Add Leave Type
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <label class="form-check-label d-inline p-2" for="addEmployee">
+                                <input type="checkbox" class="form-check-input" id="addEmployee" name="addEmployee">
+                                Add Employee
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <label class="form-check-label d-inline p-2" for="leaveCreate">
+                                <input type="checkbox" class="form-check-input" id="leaveCreate" name="leaveCreate">
+                                Leave Application
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <label class="form-check-label d-inline p-2" for="attReg">
+                                <input type="checkbox" class="form-check-input" id="attReg" name="attReg">
+                                Attendance Register
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <label class="form-check-label d-inline p-2" for="reports">
+                                <input type="checkbox" class="form-check-input" id="reports" name="reports">
+                                View Reports
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <label class="form-check-label d-inline p-2" for="settings">
+                                <input type="checkbox" class="form-check-input" id="settings" name="settings">
+                                Settings
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-4">
+                        <div class="form-check">
+                            <label class="form-check-label d-inline p-2">
+                                <input type="checkbox" class="form-check-input">
+                                Update User Role
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <label class="form-check-label d-inline p-2" for="updateUser">
+                                <input type="checkbox" class="form-check-input" id="updateUser" name="updateUser">
+                                Update User
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label d-inline p-2" for="updateCountry">
+                                <input type="checkbox" class="form-check-input" id="updateCountry" name="updateCountry">
+                                Update Country
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label d-inline p-2" for="updateCompany">
+                                <input type="checkbox" class="form-check-input" id="updateCompany" name="updateCompany">
+                                Update Company
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label d-inline p-2" for="updateDept">
+                                <input type="checkbox" class="form-check-input" id="updateDept" name="updateDept">
+                                Update Department
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label d-inline p-2" for="updateTeam">
+                                <input type="checkbox" class="form-check-input" id="updateTeam" name="updateTeam">
+                                Update Team
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label d-inline p-2" for="updateEmployeeType">
+                                <input type="checkbox" class="form-check-input" id="updateEmployeeType"
+                                    name="updateEmployeeType">
+                                Update Employee Type
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label d-inline p-2" for="updateLeaveType">
+                                <input type="checkbox" class="form-check-input" id="updateLeaveType"
+                                    name="updateLeaveType">
+                                Update Leave Type
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label d-inline p-2" for="updateRole">
+                                <input type="checkbox" class="form-check-input" id="updateRole" name="updateRole">
+                                Update Employee
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <label class="form-check-label d-inline p-2" for="leaveUpdate">
+                                <input type="checkbox" class="form-check-input" id="leaveUpdate" name="leaveUpdate">
+                                Leave Approval
+                            </label>
+                        </div>
+
+                    </div>
+                    <div class="form-group col-md-4">
+                        <div class="form-check">
+                            <label class="form-check-label d-inline p-2" for="deleteRole">
+                                <input type="checkbox" class="form-check-input" id="deleteRole" name="deleteRole">
+                                Delete User Role
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label d-inline p-2" for="deleteUser">
+                                <input type="checkbox" class="form-check-input" id="deleteUser" name="deleteUser">
+                                Delete User
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label d-inline p-2" for="deleteCountry">
+                                <input type="checkbox" class="form-check-input" id="deleteCountry" name="deleteCountry">
+                                Delete Country
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label d-inline p-2" for="deleteCompany">
+                                <input type="checkbox" class="form-check-input" id="deleteCompany" name="deleteCompany">
+                                Delete Company
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label d-inline p-2" for="deleteDept">
+                                <input type="checkbox" class="form-check-input" id="deleteDept" name="deleteDept">
+                                Delete Department
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label d-inline p-2" for="deleteTeam">
+                                <input type="checkbox" class="form-check-input" id="deleteTeam" name="deleteTeam">
+                                Delete Team
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label d-inline p-2" for="deleteEmployeeType">
+                                <input type="checkbox" class="form-check-input" id="deleteEmployeeType"
+                                    name="deleteEmployeeType">
+                                Delete Employee Type
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label d-inline p-2" for="deleteLeaveType">
+                                <input type="checkbox" class="form-check-input" id="deleteLeaveType"
+                                    name="deleteLeaveType">
+                                Delete Leave Type
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label d-inline p-2" for="deleteEmployee">
+                                <input type="checkbox" class="form-check-input" id="deleteEmployee"
+                                    name="deleteEmployee">
+                                Terminate Employee
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <!-- Row 3 End -->
+
+
+                @auth()
+                <a href="{!!URL::route('roles')!!}" class="btn btn-sm btn-info" role="button">Cancel</a>
+                @else
+                <a href="{!!URL::previous()!!}" class="btn btn-sm btn-info" role="button">Back</a>
+                @endif
+                {!! Form::submit('Add', array('class' => 'btn btn-sm btn-primary')) !!}
+                {!! Form::close() !!}
+
+
+            </div>
+
         </div>
     </div>
-    <script>
-        $('#selectAll').click(function() {
+</div>
+<script>
+    $('#selectAll').click(function() {
             $(this.form.elements).filter(':checkbox').prop('checked', this.checked)
         });
-    </script>
+</script>
+
+
 @endsection

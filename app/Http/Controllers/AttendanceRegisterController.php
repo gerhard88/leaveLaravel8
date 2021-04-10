@@ -63,7 +63,7 @@ class AttendanceRegisterController extends Controller
 
         $role = Role::where('description', 'like', '%' . 'uper' . '%')->first();
 
-        $pieces = array_filter( explode("&",$_SERVER['QUERY_STRING'] ));
+        $pieces = array_filter(explode("&", $_SERVER['QUERY_STRING']));
         $params = array();
         //add all the parameters into a array called $params
         foreach ($pieces as $param) {
@@ -73,19 +73,15 @@ class AttendanceRegisterController extends Controller
         $employeesQuery = Employee::where('id', '>', 0)
             ->where('employee_status', '=', 'A');
 
-        if (array_key_exists("employeeType_id",$params))
-        {
+        if (array_key_exists("employeeType_id", $params)) {
             $employeesQuery = $employeesQuery->wherein('employeeType_id', $params["employeeType_id"]);
         }
-        if(count($params) > 0)
-        {
-            if (array_key_exists("dept_id",$params))
-            {
-                $employeesQuery = $employeesQuery->wherein('dept_id',$params["dept_id"]);
+        if (count($params) > 0) {
+            if (array_key_exists("dept_id", $params)) {
+                $employeesQuery = $employeesQuery->wherein('dept_id', $params["dept_id"]);
             }
-            if (array_key_exists("team_id",$params))
-            {
-                $employeesQuery = $employeesQuery->wherein('team_id',$params["team_id"]);
+            if (array_key_exists("team_id", $params)) {
+                $employeesQuery = $employeesQuery->wherein('team_id', $params["team_id"]);
             }
         }
         if ($role->id == $user->role_id)
@@ -99,14 +95,20 @@ class AttendanceRegisterController extends Controller
         $date2 = Carbon::parse($date2)->format('Y-m-d');
         $type = null;
 
-        $day1 = null; $day2 = null; $day3 = null; $day4 = null; $day5 = null; $day6 = null; $day7 = null; $str_day1 = null;
+        $day1 = null;
+        $day2 = null;
+        $day3 = null;
+        $day4 = null;
+        $day5 = null;
+        $day6 = null;
+        $day7 = null;
+        $str_day1 = null;
         $last_date = null;
 
         $datePagination = Carbon::now();
         $checkPagination = $datePagination->format('Y-m-d');
 
-        for ($i = 0; $i < 7; $i++)
-        {
+        for ($i = 0; $i < 7; $i++) {
             $create_date = Carbon::parse($date2)->addDays($i);
             if ($create_date->format('Y-m-d') <= $checkPagination) {
                 if ($i == 0) {
@@ -133,8 +135,7 @@ class AttendanceRegisterController extends Controller
             }
         }
         $employeesRegisterArray = array();
-        foreach ($employees as $employee)
-        {
+        foreach ($employees as $employee) {
             $employeesRegister = new EmployeesRegister();
             $employeesRegister->id = $employee->id;
             $employeesRegister->employeeNo = $employee->employee_no;
@@ -161,7 +162,7 @@ class AttendanceRegisterController extends Controller
                     if ($day4 == $register->dayOfWeek)
                         $employeesRegister->day4Reg = $register->register;
 
-                    if($day5 == $register->dayOfWeek)
+                    if ($day5 == $register->dayOfWeek)
                         $employeesRegister->day5Reg = $register->register;
 
                     if ($day6 == $register->dayOfWeek)
@@ -190,8 +191,18 @@ class AttendanceRegisterController extends Controller
                 $paginateRight = 'No';
         } else
             $paginateRight = 'No';
-        return view('attendanceRegister.add', compact('employeesRegisterArray', 'day1', 'day2', 'day3', 'day4',
-            'day5', 'day6', 'day7', 'type', 'paginateRight'));
+        return view('attendanceRegister.add', compact(
+            'employeesRegisterArray',
+            'day1',
+            'day2',
+            'day3',
+            'day4',
+            'day5',
+            'day6',
+            'day7',
+            'type',
+            'paginateRight'
+        ));
     }
 
     /**
@@ -390,10 +401,8 @@ class AttendanceRegisterController extends Controller
         $empType = EmployeeType::where('employee_type', 'like', '%' . 'hift' . '%')
             ->where('id', '=', $employee->employeeType_id)->first();
 
-        foreach ($attendanceRegister as $register)
-        {
-            if ($empType)
-            {
+        foreach ($attendanceRegister as $register) {
+            if ($empType) {
                 if ($register->register == 'P')
                     $grandTotalDays = ++$grandTotalDays;
             } else {
@@ -404,7 +413,6 @@ class AttendanceRegisterController extends Controller
         if ($empType) {
             $annual_leave = $grandTotalDays / 17;
             $sick_leave = $grandTotalDays / 26;
-
         } else {
             $grandTotalDays = $grandTotalHours / 8;
             $annual_leave = $grandTotalDays / 17;
@@ -451,8 +459,7 @@ class AttendanceRegisterController extends Controller
         $endDate = $pageDate->format('Y-m-d');
         $day7 = $request->day7;
 
-        while ($request->day7 < $endDate && $day7 == $request->day7)
-        {
+        while ($request->day7 < $endDate && $day7 == $request->day7) {
             $day1 = Carbon::parse($day7)->addDays(1);
             $day1 = $day1->format('Y-m-d');
 
@@ -494,8 +501,7 @@ class AttendanceRegisterController extends Controller
         }
 
         $employeesRegisterArray = array();
-        foreach ($employees as $emp)
-        {
+        foreach ($employees as $emp) {
             $employeeRegister = new EmployeesRegister();
             $employee = Employee::find($emp);
             $employeeRegister->id = $employee->id;
@@ -509,8 +515,7 @@ class AttendanceRegisterController extends Controller
                 ->where('employee_id', '=', $employee->id)->get();
             if ($attendanceRegister) {
                 $cnt = 1;
-                foreach ($attendanceRegister as $register)
-                {
+                foreach ($attendanceRegister as $register) {
                     if ($cnt == 1) {
                         if ($day1 == $register->dayOfWeek)
                             $employeeRegister->day1Reg = $register->register;
@@ -568,19 +573,30 @@ class AttendanceRegisterController extends Controller
             array_push($employeesRegisterArray, $employeeRegister);
         }
         $type = $employeeType->employee_type;
-        if ($day1 == $endDate or $day2 == $endDate or $day3 == $endDate or $day4 == $endDate or $day5 == $endDate or
-            $day6 == $endDate or $day7 == $endDate)
+        if (
+            $day1 == $endDate or $day2 == $endDate or $day3 == $endDate or $day4 == $endDate or $day5 == $endDate or
+            $day6 == $endDate or $day7 == $endDate
+        )
             $paginateRight = 'No';
 
-        return view('attendanceRegister.add', compact('employeesRegisterArray', 'day1', 'day2', 'day3', 'day4',
-            'day5', 'day6', 'day7', 'type', 'paginateRight'));
+        return view('attendanceRegister.add', compact(
+            'employeesRegisterArray',
+            'day1',
+            'day2',
+            'day3',
+            'day4',
+            'day5',
+            'day6',
+            'day7',
+            'type',
+            'paginateRight'
+        ));
     }
     public function paginateLeft(Request $request)
     {
         $employees = $request->employeesRegisterArray;
         $day1 = $request->day1;
-        for($i = 0; $i < 7; $i++)
-        {
+        for ($i = 0; $i < 7; $i++) {
             if ($i == 0) {
                 $day7 = Carbon::parse($day1)->subDays(1);
                 $day7 = $day7->format('Y-m-d');
@@ -611,8 +627,7 @@ class AttendanceRegisterController extends Controller
             }
         }
         $employeesRegisterArray = array();
-        foreach ($employees as $employee)
-        {
+        foreach ($employees as $employee) {
             $employeeRegister = new EmployeesRegister();
             $employeeRegister->id = $employee['id'];
             $employeeRegister->employeeNo = $employee['employeeNo'];
@@ -625,8 +640,7 @@ class AttendanceRegisterController extends Controller
                 ->where('employee_id', '=', $employee['id'])->orderBy('dayOfWeek', 'DESC')->get();
             if ($attendanceRegister) {
                 $cnt = 1;
-                foreach ($attendanceRegister as $register)
-                {
+                foreach ($attendanceRegister as $register) {
                     if ($cnt == 1) {
                         if ($day7 == $register->dayOfWeek)
                             $employeeRegister->day7Reg = $register->register;
@@ -685,8 +699,18 @@ class AttendanceRegisterController extends Controller
             $type = $employee['employeeType'];
         }
         $paginateRight = 'Yes';
-        return view('attendanceRegister.add', compact('employeesRegisterArray', 'day1', 'day2', 'day3', 'day4',
-            'day5', 'day6', 'day7', 'type', 'paginateRight'));
+        return view('attendanceRegister.add', compact(
+            'employeesRegisterArray',
+            'day1',
+            'day2',
+            'day3',
+            'day4',
+            'day5',
+            'day6',
+            'day7',
+            'type',
+            'paginateRight'
+        ));
     }
 }
 class EmployeesRegister

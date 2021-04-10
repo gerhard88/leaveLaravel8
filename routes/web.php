@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\SetupController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\DepartmentController;
@@ -74,6 +75,9 @@ Route::PATCH('role/update/{id}', [RoleController::class, 'update'])->name('updat
 
 //get the dashboard screen
 Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+//get the setup screen
+Route::get('setup', [SetupController::class, 'index'])->name('setup');
 
 // route to list countries
 Route::get('countries', [CountryController::class, 'index'])->name('countries');
@@ -310,4 +314,3 @@ Route::group(['middleware' => ['myMiddleware']], function () {
     Route::get('settings', [ReportController::class, 'settings'])->name('settings');
     Route::get('calendar', [FullCalendarController::class, 'index'])->name('calendar');
 });
-
