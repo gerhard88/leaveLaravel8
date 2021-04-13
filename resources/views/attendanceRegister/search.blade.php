@@ -35,8 +35,8 @@
                 <!-- Row 2 Begin - Multiple Teams Select -->
                 <div class="row">
                     <div class="col-sm-6">
+                        {!! Form::Label('team_id', 'Teams') !!}
                         <div class="form-group">
-                            {!! Form::Label('team_id', 'Teams') !!}
                             <select class="js-example-basic-multiple w-100" multiple="multiple">
                                 @foreach($teams as $team)
                                 <option value="{{$team->id}}">{{$team->name}}</option>

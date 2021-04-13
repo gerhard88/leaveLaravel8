@@ -13980,7 +13980,7 @@ fieldset:disabled .fc a.fc-button,
 .fc .fc-toolbar.fc-header-toolbar .fc-toolbar-chunk .fc-button-group .fc-button.fc-button-active:hover {
     color: #fff;
     background-color: #499af1;
-    border-color: #4250f2;
+    border-color: #499af1;
 }
 
 .btn-primary:focus,
@@ -13993,7 +13993,7 @@ fieldset:disabled .fc a.fc-button,
 .fc .fc-toolbar.fc-header-toolbar .fc-toolbar-chunk .fc-button-group .focus.fc-button.fc-button-active {
     color: #fff;
     background-color: #499af1;
-    border-color: #4250f2;
+    border-color: #499af1;
     box-shadow: 0 0 0 0.2rem rgba(135, 144, 247, 0.5);
 }
 
@@ -14023,7 +14023,7 @@ fieldset:disabled .fc a.fc-button,
 .swal2-modal .swal2-actions .show>button.dropdown-toggle.swal2-confirm,
 .fc .fc-toolbar.fc-header-toolbar .fc-toolbar-chunk .fc-button-group .show>.dropdown-toggle.fc-button.fc-button-active {
     color: #fff;
-    background-color: #4250f2;
+    background-color: #499af1;
     border-color: #3645f1;
 }
 
@@ -17647,7 +17647,7 @@ a.badge:focus {
 a.badge-primary:hover,
 a.badge-primary:focus {
     color: #fff;
-    background-color: #4250f2;
+    background-color: #499af1;
 }
 
 a.badge-primary:focus,
@@ -19406,7 +19406,7 @@ a.bg-primary:hover,
 a.bg-primary:focus,
 button.bg-primary:hover,
 button.bg-primary:focus {
-    background-color: #4250f2 !important;
+    background-color: #499af1 !important;
 }
 
 .bg-secondary {
