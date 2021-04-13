@@ -1,0 +1,54 @@
+{
+  "_from": "@mdi/font@^5.1.45",
+  "_id": "@mdi/font@5.8.55",
+  "_inBundle": false,
+  "_integrity": "sha512-8mrwfFBsmj+D67ZiGQSe5TU/lcWCtDyli2eshQ2fvLCZGRPqFMM23YQp4+JMOTpk5yMZKTeAwNWIYfITy76OHA==",
+  "_location": "/@mdi/font",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "range",
+    "registry": true,
+    "raw": "@mdi/font@^5.1.45",
+    "name": "@mdi/font",
+    "escapedName": "@mdi%2ffont",
+    "scope": "@mdi",
+    "rawSpec": "^5.1.45",
+    "saveSpec": null,
+    "fetchSpec": "^5.1.45"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/@mdi/font/-/font-5.8.55.tgz",
+  "_shasum": "1464155bcbc8a6e4af6dffd611fe8e38e09af285",
+  "_spec": "@mdi/font@^5.1.45",
+  "_where": "/Users/suhailkc/Projects/tf/ui-laravel/template/light",
+  "author": {
+    "name": "Austin Andrews",
+    "url": "http://twitter.com/templarian"
+  },
+  "bugs": {
+    "url": "https://github.com/Templarian/MaterialDesign/issues"
+  },
+  "bundleDependencies": false,
+  "deprecated": false,
+  "description": "Dist for Material Design Webfont. This includes the Stock and Community icons in a single webfont collection.",
+  "homepage": "https://materialdesignicons.com",
+  "keywords": [
+    "material",
+    "design",
+    "icons",
+    "webfont"
+  ],
+  "license": "Apache-2.0",
+  "name": "@mdi/font",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Templarian/MaterialDesign-Webfont.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "style": "css/materialdesignicons.css",
+  "version": "5.8.55"
+}

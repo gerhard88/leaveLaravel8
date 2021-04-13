@@ -123,7 +123,7 @@
             paging:         true,
             fixedColumns:   {
                 leftColumns: 0,
-                rightColumns: 1
+                rightColumns: 1,
             }
         });
     });
@@ -133,9 +133,10 @@
 
 
 @push('plugin-scripts')
-<script src="{{ asset('assets/plugins/datatables-net/jquery.dataTables.js') }}"></script>
-<script src="{{ asset('assets/plugins/datatables-net-bs4/dataTables.bootstrap4.js') }}"></script>
 
+
+<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/fixedcolumns/3.3.2/js/dataTables.fixedColumns.min.js"></script>
 
 @endpush
 
