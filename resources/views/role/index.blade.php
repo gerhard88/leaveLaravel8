@@ -3,56 +3,59 @@
 @extends('layout/layout')
 
 @section('content')
-    <!-- List Role Form... -->
+<!-- List Role Form... -->
 
-    <!-- Current Roles -->
+<!-- Current Roles -->
 
-    <div class="row">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <div class="row">
-                    <div class="col-xs-6">
-                        <h4>User Roles</h4>
-                    </div>
-                    <div class="col-xs-6 text-right">
-                        <a href="role/create" role="button" class="btn btn-default">Add User Role</a>
-                    </div>
-                </div>
+<div class="row my-6 mx-6">
+    <div class="col-md-8 grid-margin  stretch-card">
+        <div class="card">
+            <div class="container-fluid mt-2 w-100">
+                <h4 class="float-left mt-4 ml-2">User Roles</h4>
+                <a href="role/create" class="btn btn-primary btn-xs mt-4 float-right" role="button"><i
+                        data-feather="user-plus" class="mr-2 icon-md"></i>Add User Role</a>
             </div>
-            <div class="panel-body">
+
+            <div class="card-body">
                 <table class="table table-striped" id="dataTable">
-                @if (count($roles) > 0)
+                    @if (count($roles) > 0)
 
                     <!-- Table Headings -->
-                        <thead>
-                        <th width="25%">User Role</th>
+                    <thead>
+                        <th width="100%">User Role</th>
                         <th width="*">Action</th>
-                        </thead>
+                    </thead>
 
-                        <!-- Table Body -->
-                        <tbody>
+                    <!-- Table Body -->
+                    <tbody>
                         @foreach ($roles as $role)
-                            <tr>
-                                <!-- Role Description -->
-                                <td class="table-text">
-                                    <div>{{ $role->description }}</div>
-                                </td>
+                        <tr>
+                            <!-- Role Description -->
+                            <td class="table-text">
+                                <div>{{ $role->description }}</div>
+                            </td>
 
-                                <td>
-                                    <div>
-                                        {!! Form::model($role, ['method' => 'GET', 'route' => ['edit', $role->id]]) !!}
-                                        <button type="submit" class="btn btn-warning"><i class="fa fa-trash"></i></i> Edit </button>
-                                        {!! Form::close() !!}
-                                    </div>
-                                </td>
-                            </tr>
+                            <td>
+                                <div>
+                                    {!! Form::model($role, ['method' => 'GET', 'route' => ['edit', $role->id]]) !!}
+                                    <button type="submit" class="btn btn-sm btn-warning"><i class="fa fa-trash"></i></i>
+                                        Edit
+                                    </button>
+                                    {!! Form::close() !!}
+                                </div>
+                            </td>
+                        </tr>
                         @endforeach
-                        </tbody>
+                    </tbody>
                     @else
-                        <div class="alert alert-info" role="alert">No user roles are available</div>
+                    <div class="alert alert-info" role="alert">No user roles are available</div>
                     @endif
                 </table>
+
             </div>
+
         </div>
     </div>
+</div>
+
 @endsection

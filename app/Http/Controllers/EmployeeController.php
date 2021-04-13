@@ -26,7 +26,7 @@ class EmployeeController extends Controller
      * Define your validation rules in a property in
      * the controller to reuse the rules.
      */
-    protected $validationRules=[
+    protected $validationRules = [
         'employeeType_id' => 'required|numeric|digits_between:1,9999',
         'dob' => 'date_format:Y-m-d',
         'start_date' => 'date_format:Y-m-d',
@@ -51,8 +51,7 @@ class EmployeeController extends Controller
 
         $employeesArray = array();
 
-        foreach ($employees as $employee)
-        {
+        foreach ($employees as $employee) {
             $employeeArray = new Employee();
             $employeeArray->id = $employee->id;
             $employeeArray->name = $employee->name;
@@ -90,8 +89,7 @@ class EmployeeController extends Controller
             $teams = Team::all();
         } else {
             $companies = Company::where('id', '=', $user->company_id)->get();
-            foreach ($companies as $company)
-            {
+            foreach ($companies as $company) {
                 if ($company->id == $user->company_id)
                     $countries = Country::where('id', '=', $company->country_id)->get();
             }
@@ -149,9 +147,11 @@ class EmployeeController extends Controller
                 return Redirect::route('addEmployee')->withInput()->with('warning', 'First 6 characters of ID no & date of birth are not equal!');
         }
 
-        if ($request->annual == null && $request->sick == null && $request->public == null && $request->study == null &&
+        if (
+            $request->annual == null && $request->sick == null && $request->public == null && $request->study == null &&
             $request->family == null && $request->maternity == null && $request->commissioning == null &&
-            $request->unpaid == null && $request->adoption == null && $request->paternity == null)
+            $request->unpaid == null && $request->adoption == null && $request->paternity == null
+        )
             return Redirect::route('addEmployee')->withInput()->with('warning', 'At least one leave type must be selected!');
 
         $input = $request->all();
@@ -160,8 +160,7 @@ class EmployeeController extends Controller
         $employee->country_id = $company->country_id;
         $days = $request->days;
 
-        if ($employee->save())
-        {
+        if ($employee->save()) {
             $employeeId = Employee::where('name', '=', $request->name)
                 ->where('surname', '=', $request->surname)->first();
 
@@ -285,8 +284,7 @@ class EmployeeController extends Controller
             $teams = Team::all();
         } else {
             $companies = Company::where('id', '=', $user->company_id)->get();
-            foreach ($companies as $company)
-            {
+            foreach ($companies as $company) {
                 if ($company->id == $user->company_id)
                     $countries = Country::where('id', '=', $company->country_id)->get();
             }
@@ -296,12 +294,19 @@ class EmployeeController extends Controller
         $employeeTypes = EmployeeType::all();
         $leaveCalculations = LeaveCalculation::where('employee_id', '=', $employee->id)->get();
 
-        $annual = null; $sick = null; $public = null; $study = null; $family = null; $maternity = null;
-        $commissioning = null; $unpaid = null; $adoption = null; $paternity = null;
+        $annual = null;
+        $sick = null;
+        $public = null;
+        $study = null;
+        $family = null;
+        $maternity = null;
+        $commissioning = null;
+        $unpaid = null;
+        $adoption = null;
+        $paternity = null;
         $work_daysPerWeek = null;
 
-        foreach ($leaveCalculations as $calculation)
-        {
+        foreach ($leaveCalculations as $calculation) {
             $work_daysPerWeek = $calculation->work_daysPerWeek;
             $type = LeaveType::where('type', 'like', '%' . 'nnua' . '%')->first();
             if ($type->id == $calculation->leaveType_id)
@@ -352,9 +357,25 @@ class EmployeeController extends Controller
                 }
             }
         }
-        return view('employee.edit', compact('employee', 'countries', 'companies', 'departments', 'teams', 'employeeTypes',
-            'work_daysPerWeek', 'annual', 'sick', 'public', 'study', 'family', 'maternity', 'commissioning', 'unpaid',
-            'adoption', 'paternity'));
+        return view('employee.edit', compact(
+            'employee',
+            'countries',
+            'companies',
+            'departments',
+            'teams',
+            'employeeTypes',
+            'work_daysPerWeek',
+            'annual',
+            'sick',
+            'public',
+            'study',
+            'family',
+            'maternity',
+            'commissioning',
+            'unpaid',
+            'adoption',
+            'paternity'
+        ));
     }
     /**
      * Update the specified resource in storage.
@@ -429,8 +450,10 @@ class EmployeeController extends Controller
                 }
             } else {
                 if ($request->annual == 'on')
-                    return Redirect::route('editEmployee', [$id])->withInput()->with('warning',
-                        'Leave type annual is not added on LeaveType table');
+                    return Redirect::route('editEmployee', [$id])->withInput()->with(
+                        'warning',
+                        'Leave type annual is not added on LeaveType table'
+                    );
             }
             $leaveType = LeaveType::where('type', 'like', '%' . 'ick' . '%')->first();
             if ($leaveType) {
@@ -447,8 +470,10 @@ class EmployeeController extends Controller
                 }
             } else {
                 if ($request->sick == 'on')
-                    return Redirect::route('editEmployee', [$id])->withInput()->with('warning',
-                        'Leave type sick is not added on LeaveType table');
+                    return Redirect::route('editEmployee', [$id])->withInput()->with(
+                        'warning',
+                        'Leave type sick is not added on LeaveType table'
+                    );
             }
 
             $leaveType = LeaveType::where('type', 'like', '%' . 'blic' . '%')->first();
@@ -466,8 +491,10 @@ class EmployeeController extends Controller
                 }
             } else {
                 if ($request->public == 'on')
-                    return Redirect::route('editEmployee', [$id])->withInput()->with('warning',
-                        'Leave type public is not added on LeaveType table');
+                    return Redirect::route('editEmployee', [$id])->withInput()->with(
+                        'warning',
+                        'Leave type public is not added on LeaveType table'
+                    );
             }
             $leaveType = LeaveType::where('type', 'like', '%' . 'udy' . '%')->first();
             if ($leaveType) {
@@ -484,8 +511,10 @@ class EmployeeController extends Controller
                 }
             } else {
                 if ($request->study == 'on')
-                    return Redirect::route('editEmployee', [$id])->withInput()->with('warning',
-                        'Leave type study is not added on LeaveType table');
+                    return Redirect::route('editEmployee', [$id])->withInput()->with(
+                        'warning',
+                        'Leave type study is not added on LeaveType table'
+                    );
             }
             $leaveType = LeaveType::where('type', 'like', '%' . 'mily' . '%')->first();
             if ($leaveType) {
@@ -502,8 +531,10 @@ class EmployeeController extends Controller
                 }
             } else {
                 if ($request->family == 'on')
-                    return Redirect::route('editEmployee', [$id])->withInput()->with('warning',
-                        'Leave type family responsibility is not added on LeaveType table');
+                    return Redirect::route('editEmployee', [$id])->withInput()->with(
+                        'warning',
+                        'Leave type family responsibility is not added on LeaveType table'
+                    );
             }
             $leaveType = LeaveType::where('type', 'like', '%' . 'mate' . '%')->first();
             if ($leaveType) {
@@ -520,8 +551,10 @@ class EmployeeController extends Controller
                 }
             } else {
                 if ($request->maternity == 'on')
-                    return Redirect::route('editEmployee', [$id])->withInput()->with('warning',
-                        'Leave type maternity is not added on LeaveType table');
+                    return Redirect::route('editEmployee', [$id])->withInput()->with(
+                        'warning',
+                        'Leave type maternity is not added on LeaveType table'
+                    );
             }
             $leaveType = LeaveType::where('type', 'like', '%' . 'sionin' . '%')->first();
             if ($leaveType) {
@@ -538,8 +571,10 @@ class EmployeeController extends Controller
                 }
             } else {
                 if ($request->commissioning == 'on')
-                    return Redirect::route('editEmployee', [$id])->withInput()->with('warning',
-                        'Leave type commissioning is not added on LeaveType table');
+                    return Redirect::route('editEmployee', [$id])->withInput()->with(
+                        'warning',
+                        'Leave type commissioning is not added on LeaveType table'
+                    );
             }
             $leaveType = LeaveType::where('type', 'like', '%' . 'paid' . '%')->first();
             if ($leaveType) {
@@ -556,8 +591,10 @@ class EmployeeController extends Controller
                 }
             } else {
                 if ($request->unpaid == 'on')
-                    return Redirect::route('editEmployee', [$id])->withInput()->with('warning',
-                        'Leave type unpaid is not added on LeaveType table');
+                    return Redirect::route('editEmployee', [$id])->withInput()->with(
+                        'warning',
+                        'Leave type unpaid is not added on LeaveType table'
+                    );
             }
             $leaveType = LeaveType::where('type', 'like', '%' . 'opti' . '%')->first();
             if ($leaveType) {
@@ -574,8 +611,10 @@ class EmployeeController extends Controller
                 }
             } else {
                 if ($request->adoption == 'on')
-                    return Redirect::route('editEmployee', [$id])->withInput()->with('warning',
-                        'Leave type adoption is not added on LeaveType table');
+                    return Redirect::route('editEmployee', [$id])->withInput()->with(
+                        'warning',
+                        'Leave type adoption is not added on LeaveType table'
+                    );
             }
             $leaveType = LeaveType::where('type', 'like', '%' . 'pate' . '%')->first();
             if ($leaveType) {
@@ -592,8 +631,10 @@ class EmployeeController extends Controller
                 }
             } else {
                 if ($request->paternity == 'on')
-                    return Redirect::route('editEmployee', [$id])->withInput()->with('warning',
-                        'Leave type paternity is not added on LeaveType table');
+                    return Redirect::route('editEmployee', [$id])->withInput()->with(
+                        'warning',
+                        'Leave type paternity is not added on LeaveType table'
+                    );
             }
             return Redirect::route('employees')->with('success', 'Successfully updated employee!');
         } else
@@ -618,8 +659,7 @@ class EmployeeController extends Controller
     {
         $employee = Employee::findOrFail($id);
 
-        if ($employee)
-        {
+        if ($employee) {
             $employeeHistory = new EmployeeHistory();
             $employeeHistory->employee_no = $employee->employee_no;
             $employeeHistory->surname = $employee->surname;
